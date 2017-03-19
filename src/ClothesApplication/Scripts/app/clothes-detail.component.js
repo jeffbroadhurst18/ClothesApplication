@@ -1,4 +1,4 @@
-System.register(["@angular/core", "./clothes"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./clothes.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,23 +10,41 @@ System.register(["@angular/core", "./clothes"], function (exports_1, context_1) 
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, clothes_1, ClothesDetailComponent;
+    var core_1, router_1, clothes_service_1, ClothesDetailComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (clothes_1_1) {
-                clothes_1 = clothes_1_1;
+            function (router_1_1) {
+                router_1 = router_1_1;
+            },
+            function (clothes_service_1_1) {
+                clothes_service_1 = clothes_service_1_1;
             }
         ],
         execute: function () {
             ClothesDetailComponent = class ClothesDetailComponent {
+                constructor(clothesService, router, activatedRoute) {
+                    this.clothesService = clothesService;
+                    this.router = router;
+                    this.activatedRoute = activatedRoute;
+                }
+                ngOnInit() {
+                    this.activatedRoute.params.forEach((params) => {
+                        let id = +params['id'];
+                        this.clothesService.getCategoryItem(id).subscribe(clothesItem => this.clothesItem = clothesItem);
+                    });
+                    var id = +this.activatedRoute.snapshot.params["id"];
+                    if (id) {
+                        this.clothesService.getCategoryItem(id).subscribe(clothesItem => this.clothesItem = clothesItem);
+                    }
+                    else {
+                        console.log("Invalid id: routing back to home");
+                        this.router.navigate([""]);
+                    }
+                }
             };
-            __decorate([
-                core_1.Input("clothesItem"),
-                __metadata("design:type", clothes_1.ClothesItem)
-            ], ClothesDetailComponent.prototype, "clothesItem", void 0);
             ClothesDetailComponent = __decorate([
                 core_1.Component({
                     selector: "clothes-detail",
@@ -67,9 +85,14 @@ System.register(["@angular/core", "./clothes"], function (exports_1, context_1) 
             .item-details ul li {
                 padding: 5px 0;
              }
+            .item-details label { width: 300px; 
+                                  display:inline-block                                
+}
             `]
                 }),
-                __metadata("design:paramtypes", [])
+                __metadata("design:paramtypes", [clothes_service_1.ClothesService,
+                    router_1.Router,
+                    router_1.ActivatedRoute])
             ], ClothesDetailComponent);
             exports_1("ClothesDetailComponent", ClothesDetailComponent);
         }

@@ -1,5 +1,7 @@
-﻿import { Component, Input } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { ClothesItem } from "./clothes";
+import { ClothesService } from "./clothes.service";
 
 @Component({
     selector: "clothes-detail",
@@ -40,9 +42,35 @@ import { ClothesItem } from "./clothes";
             .item-details ul li {
                 padding: 5px 0;
              }
+            .item-details label { width: 300px; 
+                                  display:inline-block                                
+}
             `]
 })
 
 export class ClothesDetailComponent {
-    @Input("clothesItem") clothesItem: ClothesItem;
+    clothesItem: ClothesItem;
+
+    constructor(private clothesService: ClothesService,
+        private router: Router,
+        private activatedRoute : ActivatedRoute
+    ){}
+
+    ngOnInit() {
+         this.activatedRoute.params.forEach((params: Params) => {
+            let id = +params['id'];
+            this.clothesService.getCategoryItem(id).subscribe(clothesItem => this.clothesItem = clothesItem);
+        });
+        var id = +this.activatedRoute.snapshot.params["id"];
+        if (id) {
+            this.clothesService.getCategoryItem(id).subscribe(
+                clothesItem => this.clothesItem = clothesItem
+            );
+        }
+        else
+        {
+            console.log("Invalid id: routing back to home");
+            this.router.navigate([""]);
+        }
+    }
 }

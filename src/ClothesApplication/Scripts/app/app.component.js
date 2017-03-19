@@ -28,9 +28,10 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                     selector: 'clothes',
                     template: `<h1>{{title}}
     <nav>
-    <a routerLink="clothes-list" routerLinkActive="active">Clothes List</a>
-    </nav>
-    </h1><router-outlet></router-outlet>`
+    <div class="menu">
+        <a class="clothes" [routerLink]="['']">Clothes</a>
+    </div>
+    <router-outlet></router-outlet>`
                 }),
                 __metadata("design:paramtypes", [])
             ], AppComponent);

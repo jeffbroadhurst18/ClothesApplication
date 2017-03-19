@@ -1,7 +1,7 @@
-System.register(["@angular/router", "./clothes-list.component"], function (exports_1, context_1) {
+System.register(["@angular/router", "./clothes-list.component", "./clothes-detail.component"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var router_1, clothes_list_component_1, appRoutes, AppRoutingProviders, AppRouting;
+    var router_1, clothes_list_component_1, clothes_detail_component_1, appRoutes, AppRoutingProviders, AppRouting;
     return {
         setters: [
             function (router_1_1) {
@@ -9,10 +9,17 @@ System.register(["@angular/router", "./clothes-list.component"], function (expor
             },
             function (clothes_list_component_1_1) {
                 clothes_list_component_1 = clothes_list_component_1_1;
+            },
+            function (clothes_detail_component_1_1) {
+                clothes_detail_component_1 = clothes_detail_component_1_1;
             }
         ],
         execute: function () {
             appRoutes = [
+                {
+                    path: "clothesItem/:id",
+                    component: clothes_detail_component_1.ClothesDetailComponent
+                },
                 {
                     path: "",
                     component: clothes_list_component_1.ClothesListComponent

@@ -27,7 +27,7 @@ namespace ClothesApplication.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("Get/{id}")]
         public IActionResult Get(int id)
         {
             var cl1 = new ClothesViewModel

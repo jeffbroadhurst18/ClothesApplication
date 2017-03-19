@@ -45,7 +45,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                         .map(response => response.json())
                         .catch(this.HandleError);
                 }
-                getSingle(id) {
+                getCategoryItem(id) {
                     var url = this.baseUrl + "Get/";
                     if (id != null) {
                         url += id;

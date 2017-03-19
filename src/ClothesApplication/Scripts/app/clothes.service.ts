@@ -28,7 +28,7 @@ export class ClothesService {
             .catch(this.HandleError);
     }
 
-    getSingle(id?: number) {
+    getCategoryItem(id?: number) {
         var url = this.baseUrl + "Get/";
         if (id != null) { url += id; }
         return this.http.get(url)

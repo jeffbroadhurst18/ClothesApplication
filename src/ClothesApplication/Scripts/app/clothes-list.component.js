@@ -1,4 +1,4 @@
-System.register(["@angular/core", "./clothes.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./clothes.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,11 +10,14 @@ System.register(["@angular/core", "./clothes.service"], function (exports_1, con
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, clothes_service_1, ClothesListComponent;
+    var core_1, router_1, clothes_service_1, ClothesListComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             },
             function (clothes_service_1_1) {
                 clothes_service_1 = clothes_service_1_1;
@@ -22,8 +25,9 @@ System.register(["@angular/core", "./clothes.service"], function (exports_1, con
         ],
         execute: function () {
             ClothesListComponent = class ClothesListComponent {
-                constructor(clothesService) {
+                constructor(clothesService, router) {
                     this.clothesService = clothesService;
+                    this.router = router;
                 }
                 ngOnInit() {
                     this.categories = this.clothesService.getCategories();
@@ -40,6 +44,7 @@ System.register(["@angular/core", "./clothes.service"], function (exports_1, con
                 }
                 onSelect(item) {
                     this.selectedItem = item;
+                    this.router.navigate(['clothesItem', this.selectedItem.Id]);
                 }
                 processResult(result) {
                     return result;
@@ -63,8 +68,6 @@ System.register(["@angular/core", "./clothes.service"], function (exports_1, con
         <span>{{cloth.Description}}</span>
     </li>
     </ul>
-<div *ngIf="selectedItem">{{selectedItem.Description}}</div>
-    <clothes-detail *ngIf="selectedItem" [clothesItem]="selectedItem"></clothes-detail>
 `,
                     styles: [`
             ul.items li {
@@ -75,7 +78,7 @@ System.register(["@angular/core", "./clothes.service"], function (exports_1, con
             }
     `]
                 }),
-                __metadata("design:paramtypes", [clothes_service_1.ClothesService])
+                __metadata("design:paramtypes", [clothes_service_1.ClothesService, router_1.Router])
             ], ClothesListComponent);
             exports_1("ClothesListComponent", ClothesListComponent);
         }

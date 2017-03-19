@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, NgModule } from "@angular/core";
+import { Router } from "@angular/router";
 import { ClothesItem } from "./clothes";
 import { ClothesService } from "./clothes.service";
 import { Category } from "./category";
@@ -20,8 +21,6 @@ import { Category } from "./category";
         <span>{{cloth.Description}}</span>
     </li>
     </ul>
-<div *ngIf="selectedItem">{{selectedItem.Description}}</div>
-    <clothes-detail *ngIf="selectedItem" [clothesItem]="selectedItem"></clothes-detail>
 `,
     styles: [`
             ul.items li {
@@ -36,7 +35,7 @@ import { Category } from "./category";
 
 export class ClothesListComponent implements OnInit {
 
-    constructor(private clothesService: ClothesService) { }
+    constructor(private clothesService: ClothesService, private router:Router) { }
     selectedCategory: number;
     selectedCategoryName: string;
     clothes: Array<ClothesItem>;
@@ -61,6 +60,7 @@ export class ClothesListComponent implements OnInit {
 
     onSelect(item: ClothesItem) {
         this.selectedItem = item;
+        this.router.navigate(['clothesItem', this.selectedItem.Id]);
     }
 
     processResult(result: any) {

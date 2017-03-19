@@ -6,7 +6,8 @@ System.register([], function (exports_1, context_1) {
         setters: [],
         execute: function () {
             ClothesItem = class ClothesItem {
-                constructor(Type, Description, Shop, LastWornDate, LastWornDateString, WornCount, CreatedDate, LastModifiedDate) {
+                constructor(Id, Type, Description, Shop, LastWornDate, LastWornDateString, WornCount, CreatedDate, LastModifiedDate) {
+                    this.Id = Id;
                     this.Type = Type;
                     this.Description = Description;
                     this.Shop = Shop;

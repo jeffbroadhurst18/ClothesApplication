@@ -2,8 +2,13 @@
 import { Routes, RouterModule } from "@angular/router";
 
 import { ClothesListComponent } from './clothes-list.component';
+import { ClothesDetailComponent } from './clothes-detail.component';
 
 const appRoutes: Routes = [
+    {
+        path: "clothesItem/:id",
+        component: ClothesDetailComponent
+    },
     {
         path: "",
         component: ClothesListComponent
@@ -12,6 +17,7 @@ const appRoutes: Routes = [
         path: "clothes-list",
         component: ClothesListComponent
     }
+    
 ];
 
 export const AppRoutingProviders: any[] = [
