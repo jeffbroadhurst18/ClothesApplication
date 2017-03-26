@@ -1,5 +1,5 @@
 ﻿import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { ClothesItem } from "./clothes";
 import { Category } from "./category";
@@ -9,7 +9,7 @@ export class ClothesService {
     constructor(private http: Http) {
 
     }
-    
+
     private baseUrl = "api/clothes/";
     private categories = new Array<Category>();
 
@@ -20,28 +20,57 @@ export class ClothesService {
         return cats;
     }
 
-    getCategoryItems(num?: number) {
+    getClothesItemsByType(num?: number) {
         var url = this.baseUrl + "GetType/";
         if (num != null) { url += num; }
         return this.http.get(url)
             .map(response => response.json())
-            .catch(this.HandleError);
+            .catch(this.handleError);
     }
-
-    getCategoryItem(id?: number) {
-        var url = this.baseUrl + "Get/";
+    
+    getClothesItem(id?: number) {
+        var url = this.baseUrl;
         if (id != null) { url += id; }
         return this.http.get(url)
             .map(response => response.json())
-            .catch(this.HandleError);
+            .catch(this.handleError);
     }
 
-    getCategoryName(id : number) {
+    getCategoryName(id: number) {
         return this.categories[id - 1].name;
     }
 
-    HandleError(error: Response) {
+    // calls the POST method to add a new item
+    add(clothesItem: ClothesItem) {
+        var url = this.baseUrl;
+        return this.http.post(url, JSON.stringify(clothesItem),
+            this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
+    }
+
+    // calls the PUT method to update an existing item
+    update(clothesItem: ClothesItem)
+    {
+        var url = this.baseUrl + clothesItem.Id;
+        return this.http.put(url, JSON.stringify(clothesItem),
+            this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
+    }
+
+    // Calls Delete
+    delete(id: number) {
+        var url = this.baseUrl + id;
+        return this.http.delete(url).catch(this.handleError);
+    }
+
+    private handleError(error: Response) {
         console.error(error);
         return Observable.throw(error.json().error || "Server Error");
+    }
+
+    private getRequestOptions() {
+        return new RequestOptions({
+            headers: new Headers({
+                "Content-Type": "application/json"
+            })
+        });
     }
 }

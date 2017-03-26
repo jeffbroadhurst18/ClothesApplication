@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ClothesApplication.ViewModels;
 using Newtonsoft.Json;
+using ClothesApplication.Data;
+using ClothesApplication.Data.ClothesItems;
+using Nelibur.ObjectMapper;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,105 +15,85 @@ namespace ClothesApplication.Controllers
     [Route("api/[controller]")]
     public class ClothesController : Controller
     {
+        private ApplicationDbContext DbContext;
+
+        public ClothesController(ApplicationDbContext context)
+        {
+            DbContext = context;
+        }
+
         // GET: api/values
         [HttpGet]
         public IActionResult Get()
         {
-            var arr = new List<ClothesViewModel>();
-            ClothesViewModel cl1, cl2, cl3;
-            CreateDummyClothes(out cl1, out cl2,out cl3);
-            arr.Add(cl1);
-            arr.Add(cl2);
-            arr.Add(cl3);
-            return new JsonResult(arr, DefaultJsonSettings);
+            var items = DbContext.ClothesItems.OrderByDescending(i => i.Id).ToArray();
+            return new JsonResult(ToClothesItemModelViewList(items), DefaultJsonSettings);
         }
 
         // GET api/values/5
-        [HttpGet("Get/{id}")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var cl1 = new ClothesViewModel
+            var item = DbContext.ClothesItems.Where(i => i.Id == id).FirstOrDefault();
+            if (item != null)
             {
-                Id = 1,
-                CreatedDate = DateTime.Now.AddDays(-5),
-                Description = "First Description",
-                LastModifiedDate = DateTime.Now.AddDays(-4),
-                LastWornDate = DateTime.Now.AddDays(-1),
-                Type = 1,
-                WornCount = 3
-            };
-            return  new JsonResult(cl1,DefaultJsonSettings);
+                return new JsonResult(TinyMapper.Map<ClothesViewModel>(item), DefaultJsonSettings);
+            }
+            return NotFound(new { Error = string.Format("Item ID {0} has not been found", id) });
         }
 
         // GET api/values/5
         [HttpGet("GetType/{num}")]
         public IActionResult GetType(int num)
         {
-            var arr = new List<ClothesViewModel>();
-            ClothesViewModel cl1, cl2, cl3;
-            CreateDummyClothes(out cl1, out cl2,out cl3);
-            arr.Add(cl1);
-            arr.Add(cl2);
-            return new JsonResult(arr, DefaultJsonSettings);
-
-        }
-
-        private static void CreateDummyClothes(out ClothesViewModel cl1, out ClothesViewModel cl2, out ClothesViewModel cl3)
-        {
-            cl1 = new ClothesViewModel
-            {
-                Id = 1,
-                CreatedDate = DateTime.Now.AddDays(-5),
-                Description = "First Description",
-                Shop = "Marks and Spencer",
-                LastModifiedDate = DateTime.Now.AddDays(-4),
-                LastWornDate = DateTime.Now.AddDays(-1),
-                LastWornDateString  = DateTime.Now.AddDays(-1).ToShortDateString(),
-                Type = 1,
-                WornCount = 3
-            };
-            cl2 = new ClothesViewModel
-            {
-                Id = 2,
-                CreatedDate = DateTime.Now.AddDays(-5),
-                Description = "Second Description",
-                Shop = "Next",
-                LastModifiedDate = DateTime.Now.AddDays(-4),
-                LastWornDate = DateTime.Now.AddDays(-1),
-                LastWornDateString = DateTime.Now.AddDays(-1).ToShortDateString(),
-                Type = 1,
-                WornCount = 12
-            };
-            cl3 = new ClothesViewModel
-            {
-                Id = 3,
-                CreatedDate = DateTime.Now.AddDays(-5),
-                Description = "Second Description",
-                Shop = "Gap",
-                LastModifiedDate = DateTime.Now.AddDays(-4),
-                LastWornDate = DateTime.Now.AddDays(-1),
-                LastWornDateString = DateTime.Now.AddDays(-1).ToShortDateString(),
-                Type = 2,
-                WornCount = 14
-            };
+            var items = DbContext.ClothesItems.Where(i => i.Type == num).OrderByDescending(i => i.Id).ToArray();
+            return new JsonResult(ToClothesItemModelViewList(items), DefaultJsonSettings);
         }
 
         // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        [HttpPost()]
+        public IActionResult Add([FromBody]ClothesViewModel cvm)
         {
+            if (cvm != null)
+            {
+                var item = TinyMapper.Map<ClothesItem>(cvm);
+                item.CreatedDate = DateTime.Now;
+                item.LastModifiedDate = DateTime.Now;
+                DbContext.ClothesItems.Add(item);
+                DbContext.SaveChanges();
+                return new JsonResult(TinyMapper.Map<ClothesItem>(item), DefaultJsonSettings);
+            }
+            return new StatusCodeResult(500);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Update(int id, [FromBody]ClothesViewModel cvm)
         {
+            var item = DbContext.ClothesItems.Where(i => i.Id == id).FirstOrDefault();
+            if (item != null && cvm != null)
+            {
+                item.Description = cvm.Description;
+                item.Shop = cvm.Shop;
+                item.LastModifiedDate = cvm.LastModifiedDate;
+                DbContext.SaveChanges();
+                return new JsonResult(TinyMapper.Map<ClothesViewModel>(item), DefaultJsonSettings);
+            }
+            return NotFound(new { Error = string.Format("Item Id {0} has not been found", id) });
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var item = DbContext.ClothesItems.Where(i => i.Id == id).FirstOrDefault();
+            if (item != null)
+            {
+                DbContext.ClothesItems.Remove(item);
+                DbContext.SaveChanges();
+                return new OkResult();
+            }
+            return NotFound(new { Error = string.Format("Item Id {0} has not been found", id) });
         }
 
         private JsonSerializerSettings DefaultJsonSettings
@@ -123,6 +105,16 @@ namespace ClothesApplication.Controllers
                     Formatting = Formatting.Indented
                 };
             }
+        }
+
+        private List<ClothesViewModel> ToClothesItemModelViewList(IEnumerable<ClothesItem> clothesItems)
+        {
+            var lst = new List<ClothesViewModel>();
+            foreach (var i in clothesItems)
+            {
+                lst.Add(TinyMapper.Map<ClothesViewModel>(i));
+            };
+            return lst;
         }
     }
 }

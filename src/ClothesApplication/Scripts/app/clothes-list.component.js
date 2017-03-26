@@ -33,7 +33,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service"], funct
                     this.categories = this.clothesService.getCategories();
                 }
                 getCategoryItems() {
-                    this.clothesService.getCategoryItems(this.selectedCategory)
+                    this.clothesService.getClothesItemsByType(this.selectedCategory)
                         .subscribe(result => this.clothes = this.processResult(result));
                 }
                 onChange(newVal) {

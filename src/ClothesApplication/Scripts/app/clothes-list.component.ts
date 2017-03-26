@@ -47,7 +47,7 @@ export class ClothesListComponent implements OnInit {
     }
 
     getCategoryItems() {
-        this.clothesService.getCategoryItems(this.selectedCategory)
+        this.clothesService.getClothesItemsByType(this.selectedCategory)
             .subscribe(result => this.clothes = this.processResult(result))
     }
 

@@ -36,30 +36,52 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                     this.categories = cats;
                     return cats;
                 }
-                getCategoryItems(num) {
+                getClothesItemsByType(num) {
                     var url = this.baseUrl + "GetType/";
                     if (num != null) {
                         url += num;
                     }
                     return this.http.get(url)
                         .map(response => response.json())
-                        .catch(this.HandleError);
+                        .catch(this.handleError);
                 }
-                getCategoryItem(id) {
-                    var url = this.baseUrl + "Get/";
+                getClothesItem(id) {
+                    var url = this.baseUrl;
                     if (id != null) {
                         url += id;
                     }
                     return this.http.get(url)
                         .map(response => response.json())
-                        .catch(this.HandleError);
+                        .catch(this.handleError);
                 }
                 getCategoryName(id) {
                     return this.categories[id - 1].name;
                 }
-                HandleError(error) {
+                // calls the POST method to add a new item
+                add(clothesItem) {
+                    var url = this.baseUrl;
+                    return this.http.post(url, JSON.stringify(clothesItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
+                }
+                // calls the PUT method to update an existing item
+                update(clothesItem) {
+                    var url = this.baseUrl + clothesItem.Id;
+                    return this.http.put(url, JSON.stringify(clothesItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
+                }
+                // Calls Delete
+                delete(id) {
+                    var url = this.baseUrl + id;
+                    return this.http.delete(url).catch(this.handleError);
+                }
+                handleError(error) {
                     console.error(error);
                     return Observable_1.Observable.throw(error.json().error || "Server Error");
+                }
+                getRequestOptions() {
+                    return new http_1.RequestOptions({
+                        headers: new http_1.Headers({
+                            "Content-Type": "application/json"
+                        })
+                    });
                 }
             };
             ClothesService = __decorate([

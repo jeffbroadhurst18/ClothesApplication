@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ClothesApplication.Data;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Nelibur.ObjectMapper;
+using ClothesApplication.Data.ClothesItems;
+using ClothesApplication.ViewModels;
 
 namespace ClothesApplication
 {
@@ -36,10 +42,9 @@ namespace ClothesApplication
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-
-            
-            
-            services.AddMvc();
+                        services.AddMvc();
+            services.AddEntityFramework();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -67,6 +72,7 @@ namespace ClothesApplication
             });
 
             app.UseMvc();
+            TinyMapper.Bind<ClothesItem, ClothesViewModel>();
         }
     }
 }

@@ -6,6 +6,7 @@
     <nav>
     <div class="menu">
         <a class="clothes" [routerLink]="['']">Clothes</a>
+      | <a class="add" [routerLink]="['clothesItem', 0]">Add New</a>
     </div>
     <router-outlet></router-outlet>`
 })
