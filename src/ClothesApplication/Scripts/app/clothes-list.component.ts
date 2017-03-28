@@ -60,7 +60,7 @@ export class ClothesListComponent implements OnInit {
 
     onSelect(item: ClothesItem) {
         this.selectedItem = item;
-        this.router.navigate(['clothesItem', this.selectedItem.Id]);
+        this.router.navigate(['clothesItem/view', this.selectedItem.Id]);
     }
 
     processResult(result: any) {

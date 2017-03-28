@@ -9,11 +9,13 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from "./app.component";
 import { ClothesListComponent } from "./clothes-list.component";
-import { ClothesDetailComponent } from "./clothes-detail.component";
+import { ClothesDetailViewComponent } from "./clothes-detail-view.component";
+import { ClothesDetailEditComponent } from "./clothes-detail-edit.component";
 import { ClothesService } from "./clothes.service";
+import { TransformCategoryPipe } from "./clothes-pipe";
 
 @NgModule({
-    declarations: [AppComponent,ClothesListComponent,ClothesDetailComponent],
+    declarations: [AppComponent, ClothesListComponent, ClothesDetailViewComponent, ClothesDetailEditComponent,TransformCategoryPipe],
     imports: [BrowserModule, HttpModule, AppRouting,FormsModule,ReactiveFormsModule,RouterModule],
     providers: [ClothesService],
     bootstrap : [ AppComponent ]

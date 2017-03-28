@@ -2,12 +2,17 @@
 import { Routes, RouterModule } from "@angular/router";
 
 import { ClothesListComponent } from './clothes-list.component';
-import { ClothesDetailComponent } from './clothes-detail.component';
+import { ClothesDetailViewComponent } from './clothes-detail-view.component';
+import { ClothesDetailEditComponent } from './clothes-detail-edit.component';
 
 const appRoutes: Routes = [
     {
-        path: "clothesItem/:id",
-        component: ClothesDetailComponent
+        path: "clothesItem/edit/:id",
+        component: ClothesDetailEditComponent
+    },
+    {
+        path: "clothesItem/view/:id",
+        component: ClothesDetailViewComponent
     },
     {
         path: "",
