@@ -4,8 +4,17 @@ import { Routes, RouterModule } from "@angular/router";
 import { ClothesListComponent } from './clothes-list.component';
 import { ClothesDetailViewComponent } from './clothes-detail-view.component';
 import { ClothesDetailEditComponent } from './clothes-detail-edit.component';
+import { HomeComponent } from './home.component';
 
 const appRoutes: Routes = [
+    {
+        path: "",
+        component: HomeComponent
+    },
+    {
+        path: "home",
+        redirectTo: ""
+    },
     {
         path: "clothesItem/edit/:id",
         component: ClothesDetailEditComponent
@@ -14,15 +23,7 @@ const appRoutes: Routes = [
         path: "clothesItem/view/:id",
         component: ClothesDetailViewComponent
     },
-    {
-        path: "",
-        component: ClothesListComponent
-    },
-    {
-        path: "clothes-list",
-        component: ClothesListComponent
-    }
-    
+   
 ];
 
 export const AppRoutingProviders: any[] = [

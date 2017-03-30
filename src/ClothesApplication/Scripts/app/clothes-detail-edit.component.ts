@@ -142,7 +142,7 @@ export class ClothesDetailEditComponent {
         }
         else if (id === 0) {
             console.log("id is 0: adding a new item...");
-            this.clothesItem = new ClothesItem(0, 0, "", "", new Date(2000, 1, 1), "01/01/2000", 0, new Date(2000, 1, 1), new Date(2000, 1, 1));
+            this.clothesItem = new ClothesItem(0, 0, "", "", new Date(2000, 0, 1), "01/01/2000", 0, new Date(2000, 0, 1), new Date(2000, 0, 1));
         }
         else {
             console.log("Invalid id: routing back to home");
