@@ -31,52 +31,56 @@ System.register(["@angular/core", "@angular/router", "./clothes.service"], funct
                 }
                 ngOnInit() {
                     this.categories = this.clothesService.getCategories();
+                    var s = null;
+                    switch (this.class) {
+                        case "tops":
+                        default:
+                            this.title = "Tops";
+                            s = this.clothesService.getClothesItemsByType(1);
+                            break;
+                        case "trousers":
+                            this.title = "Trousers";
+                            s = this.clothesService.getClothesItemsByType(2);
+                            break;
+                        case "shoes":
+                            this.title = "Shoes";
+                            s = this.clothesService.getClothesItemsByType(3);
+                            break;
+                    }
+                    s.subscribe(result => this.clothes = result, error => this.errorMessage = error);
                 }
-                getCategoryItems() {
-                    this.clothesService.getClothesItemsByType(this.selectedCategory)
-                        .subscribe(result => this.clothes = this.processResult(result));
-                }
-                onChange(newVal) {
-                    var bits = newVal.split(":");
-                    this.selectedCategory = +bits[1];
-                    this.getCategoryItems();
-                    this.selectedCategoryName = this.clothesService.getCategoryName(this.selectedCategory);
-                }
+                //getCategoryItems() {
+                //    this.clothesService.getClothesItemsByType(this.selectedCategory)
+                //        .subscribe(result => this.clothes = this.processResult(result))
+                //}
+                //onChange(newVal: string) {
+                //    var bits = newVal.split(":");
+                //    this.selectedCategory = +bits[1];
+                //    this.getCategoryItems();
+                //    this.selectedCategoryName = this.clothesService.getCategoryName(this.selectedCategory);
+                //}
                 onSelect(item) {
                     this.selectedItem = item;
-                    this.router.navigate(['clothesItem', this.selectedItem.Id]);
-                }
-                processResult(result) {
-                    return result;
+                    this.router.navigate(['clothesItem/view', this.selectedItem.Id]);
                 }
             };
+            __decorate([
+                core_1.Input(),
+                __metadata("design:type", String)
+            ], ClothesListComponent.prototype, "class", void 0);
             ClothesListComponent = __decorate([
                 core_1.Component({
                     selector: "clothes-list",
-                    template: `<div>
-    <label for="categories">Select Category</label>
-    <select id="categories" required [(ngModel)]="selectedCategory" (change)="onChange($event.target.value)">
-        <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
-    </select>
-</div>
-
-    <h2 *ngIf="selectedCategory">{{selectedCategoryName}}</h2>
+                    template: `
+    <h3>{{title}}</h3>
     <ul class="items">
     <li *ngFor="let cloth of clothes"
         [class.selected]="cloth === selectedItem"
         (click)="onSelect(cloth)">
-        <span>{{cloth.Description}}</span>
+        <div class="title">{{cloth.Description}}</div>
+        <div class="description">{{cloth.LastWornDateString}}</div>
     </li>
-    </ul>
-`,
-                    styles: [`
-            ul.items li {
-                cursor: pointer;
-            }
-            ul.items li.selected {
-                background-color: #cccccc;
-            }
-    `]
+    </ul>`
                 }),
                 __metadata("design:paramtypes", [clothes_service_1.ClothesService, router_1.Router])
             ], ClothesListComponent);

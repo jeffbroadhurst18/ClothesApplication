@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/platform-browser", "@angular/http", "./app-routing", "rxjs/Rx", "@angular/forms", "@angular/router", "./app.component", "./clothes-list.component", "./clothes-detail.component", "./clothes.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/platform-browser", "@angular/http", "./app-routing", "rxjs/Rx", "@angular/forms", "@angular/router", "./app.component", "./clothes-list.component", "./clothes-detail-view.component", "./clothes-detail-edit.component", "./home.component", "./clothes.service", "./clothes-pipe"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/http", 
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, platform_browser_1, http_1, app_routing_1, forms_1, router_1, app_component_1, clothes_list_component_1, clothes_detail_component_1, clothes_service_1, AppModule;
+    var core_1, platform_browser_1, http_1, app_routing_1, forms_1, router_1, app_component_1, clothes_list_component_1, clothes_detail_view_component_1, clothes_detail_edit_component_1, home_component_1, clothes_service_1, clothes_pipe_1, AppModule;
     return {
         setters: [
             function (core_1_1) {
@@ -39,11 +39,20 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/http", 
             function (clothes_list_component_1_1) {
                 clothes_list_component_1 = clothes_list_component_1_1;
             },
-            function (clothes_detail_component_1_1) {
-                clothes_detail_component_1 = clothes_detail_component_1_1;
+            function (clothes_detail_view_component_1_1) {
+                clothes_detail_view_component_1 = clothes_detail_view_component_1_1;
+            },
+            function (clothes_detail_edit_component_1_1) {
+                clothes_detail_edit_component_1 = clothes_detail_edit_component_1_1;
+            },
+            function (home_component_1_1) {
+                home_component_1 = home_component_1_1;
             },
             function (clothes_service_1_1) {
                 clothes_service_1 = clothes_service_1_1;
+            },
+            function (clothes_pipe_1_1) {
+                clothes_pipe_1 = clothes_pipe_1_1;
             }
         ],
         execute: function () {
@@ -51,7 +60,7 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/http", 
             };
             AppModule = __decorate([
                 core_1.NgModule({
-                    declarations: [app_component_1.AppComponent, clothes_list_component_1.ClothesListComponent, clothes_detail_component_1.ClothesDetailComponent],
+                    declarations: [app_component_1.AppComponent, clothes_list_component_1.ClothesListComponent, clothes_detail_view_component_1.ClothesDetailViewComponent, clothes_detail_edit_component_1.ClothesDetailEditComponent, home_component_1.HomeComponent, clothes_pipe_1.TransformCategoryPipe],
                     imports: [platform_browser_1.BrowserModule, http_1.HttpModule, app_routing_1.AppRouting, forms_1.FormsModule, forms_1.ReactiveFormsModule, router_1.RouterModule],
                     providers: [clothes_service_1.ClothesService],
                     bootstrap: [app_component_1.AppComponent]

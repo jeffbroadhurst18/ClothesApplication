@@ -12,18 +12,10 @@ import { Category } from "./category";
     <li *ngFor="let cloth of clothes"
         [class.selected]="cloth === selectedItem"
         (click)="onSelect(cloth)">
-        <span>{{cloth.Description}}</span>
+        <div class="title">{{cloth.Description}}</div>
+        <div class="description">{{cloth.LastWornDateString}}</div>
     </li>
-    </ul>
-`,
-    styles: [`
-            ul.items li {
-                cursor: pointer;
-            }
-            ul.items li.selected {
-                background-color: #cccccc;
-            }
-    `]
+    </ul>`
 })
 
 export class ClothesListComponent implements OnInit {
