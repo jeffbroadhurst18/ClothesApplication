@@ -1,7 +1,7 @@
-System.register(["@angular/router", "./clothes-detail-view.component", "./clothes-detail-edit.component", "./home.component"], function (exports_1, context_1) {
+System.register(["@angular/router", "./clothes-detail-view.component", "./clothes-detail-edit.component", "./log-item.component", "./home.component"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var router_1, clothes_detail_view_component_1, clothes_detail_edit_component_1, home_component_1, appRoutes, AppRoutingProviders, AppRouting;
+    var router_1, clothes_detail_view_component_1, clothes_detail_edit_component_1, log_item_component_1, home_component_1, appRoutes, AppRoutingProviders, AppRouting;
     return {
         setters: [
             function (router_1_1) {
@@ -12,6 +12,9 @@ System.register(["@angular/router", "./clothes-detail-view.component", "./clothe
             },
             function (clothes_detail_edit_component_1_1) {
                 clothes_detail_edit_component_1 = clothes_detail_edit_component_1_1;
+            },
+            function (log_item_component_1_1) {
+                log_item_component_1 = log_item_component_1_1;
             },
             function (home_component_1_1) {
                 home_component_1 = home_component_1_1;
@@ -34,6 +37,10 @@ System.register(["@angular/router", "./clothes-detail-view.component", "./clothe
                 {
                     path: "clothesItem/view/:id",
                     component: clothes_detail_view_component_1.ClothesDetailViewComponent
+                },
+                {
+                    path: "logItem",
+                    component: log_item_component_1.LogItemComponent
                 },
             ];
             exports_1("AppRoutingProviders", AppRoutingProviders = []);

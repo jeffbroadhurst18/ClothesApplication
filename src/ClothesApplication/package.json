@@ -29,7 +29,8 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-typescript": "^2.13.6",
     "gulp-uglify": "^2.0.0",
-    "typescript": "^1.8.10"
+    "typescript": "^1.8.10",
+    "ng2-bootstrap": "^1.0.24"
   },
   "scripts": {"postinstall": "typings install dt~core-js --global"}
 }

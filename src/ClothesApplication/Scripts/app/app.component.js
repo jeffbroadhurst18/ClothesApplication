@@ -55,6 +55,9 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
                 <li [class.active]="isActive(['clothesItem/edit',0])">
                     <a class="add" [routerLink]="['clothesItem/edit', 0]">Add new item</a>
                 </li>
+                    <li [class.active]="isActive(['logItem'])">
+                    <a class="log" [routerLink]="['logItem']">Add Log</a>
+                </li>
             </ul>
         </div>
     </div>

@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { ClothesListComponent } from './clothes-list.component';
 import { ClothesDetailViewComponent } from './clothes-detail-view.component';
 import { ClothesDetailEditComponent } from './clothes-detail-edit.component';
+import { LogItemComponent } from './log-item.component';
 import { HomeComponent } from './home.component';
 
 const appRoutes: Routes = [
@@ -22,6 +23,10 @@ const appRoutes: Routes = [
     {
         path: "clothesItem/view/:id",
         component: ClothesDetailViewComponent
+    },
+    {
+        path: "logItem",
+        component: LogItemComponent
     },
    
 ];

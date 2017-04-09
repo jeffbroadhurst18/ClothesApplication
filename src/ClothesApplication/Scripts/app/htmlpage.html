@@ -1,46 +1,34 @@
-﻿<div *ngIf="clothesItem" class="item-container">
-    <h2>
-        <a href="#" (click)="onBack()">&laquo;Back to Home</a>
-    </h2>
-    <div class="item-container">
-        <ul class="nav nav-tabs">
-            <li role="presentation">
-                <a href="#" class="active">Edit</a>
-            </li>
-            <li role="presentation" *ngIf="clothesItem.Id !=0">
-                <a href="#" (click)="onItemDetailView(clothesItem)">View</a>
-            </li>
-        </ul>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <form class="item-detail-edit">
-                    <h3>{{clothesItem.Description}}</h3>
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <select id="category" name="input-category" required [(ngModel)]="clothesItem.Type" class="form-control" [disabled]="clothesItem.Id != 0">
-                            <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <input [(ngModel)]="clothesItem.Description" name="input-description" class="form-control" placeholder="Insert the description..." />
-                    </div>
-                    <div class="form-group">
-                        <label>Shop Purchased:</label>
-                        <input [(ngModel)]="clothesItem.Shop" name="input-shop" class="form-control" placeholder="Where was it purchased from?..." />
-                    </div>
+﻿<div class="item-container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="item-detail-edit">
+                <div class="form-group">
+                    <div>
+                        <datepicker [(ngModel)]="logItem.HistoryDate"
+                                    [showWeeks]="true"
+                                    [minDate]="minDate"
+                                    [dateDisabled]="disabledDate"
+                                    [onlyCurrentMonth]=true></datepicker>
 
-                    <div *ngIf="clothesItem.Id == 0" class="commands insert">
-                        <input type="button" value="Save" class="btn btn-primary" (click)="onInsert(clothesItem)" />
-                        <input type="button" value="Cancel" class="btn btn-default" (click)="onBack()" />
-                    </div>
-                    <div *ngIf="clothesItem.Id != 0" class="commands update">
-                        <input type="button" value="Update" class="btn btn-primary" (click)="onUpdate(clothesItem)" />
-                        <input type="button" value="Delete" class="btn btn-danger" (click)="onDelete(clothesItem)" />
-                        <input type="button" value="Cancel" class="btn btn-default" (click)="onItemDetailView(clothesItem)" />
-                    </div>
-                </form>
-            </div>
+                    </div> 
+                    <label for="top">Top</label>
+                    <select id="top" name="input-top" required [(ngModel)]="logItem.TopId" class="form-control">
+                        <option *ngFor="let top of tops" [ngValue]="top.Id">{{top.Description}} - Worn {{top.WornCount}} times - Last Worn {{top.LastWornDateString}}</option>
+                    </select>
+                    <label for="trousers">Trousers</label>
+                    <select id="top" name="input-trousers" required [(ngModel)]="logItem.TrousersId" class="form-control">
+                        <option *ngFor="let trouser of trousers" [ngValue]="trouser.Id">{{trouser.Description}} - Worn {{trouser.WornCount}} times - Last Worn {{trouser.LastWornDateString}}</option>
+                    </select>
+                    <label for="shoes">Shoes</label>
+                    <select id="top" name="input-shoes" required [(ngModel)]="logItem.ShoesId" class="form-control">
+                        <option *ngFor="let shoe of shoes" [ngValue]="shoe.Id">{{shoe.Description}} - Worn {{shoe.WornCount}} times - Last Worn {{shoe.LastWornDateString}}</option>
+                    </select>
+                </div>
+                <div class="commands insert">
+                    <input type="button" value="Save" class="btn btn-primary" (click)="onInsert(logItem)" />
+                    <input type="button" value="Cancel" class="btn btn-default" (click)="onBack()" />
+                </div>
+            </form>
         </div>
     </div>
 </div>

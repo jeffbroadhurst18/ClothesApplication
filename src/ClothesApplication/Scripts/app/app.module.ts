@@ -11,12 +11,13 @@ import { AppComponent } from "./app.component";
 import { ClothesListComponent } from "./clothes-list.component";
 import { ClothesDetailViewComponent } from "./clothes-detail-view.component";
 import { ClothesDetailEditComponent } from "./clothes-detail-edit.component";
+import { LogItemComponent } from "./log-item.component";
 import { HomeComponent } from "./home.component";
 import { ClothesService } from "./clothes.service";
 import { TransformCategoryPipe } from "./clothes-pipe";
 
 @NgModule({
-    declarations: [AppComponent, ClothesListComponent, ClothesDetailViewComponent, ClothesDetailEditComponent,HomeComponent,TransformCategoryPipe],
+    declarations: [AppComponent, ClothesListComponent, ClothesDetailViewComponent, ClothesDetailEditComponent,HomeComponent,LogItemComponent,TransformCategoryPipe],
     imports: [BrowserModule, HttpModule, AppRouting,FormsModule,ReactiveFormsModule,RouterModule],
     providers: [ClothesService],
     bootstrap : [ AppComponent ]

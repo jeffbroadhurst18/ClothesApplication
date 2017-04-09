@@ -3,6 +3,7 @@ import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { ClothesItem } from "./clothes";
 import { Category } from "./category";
+import { LogItem } from "./log";
 
 @Injectable()
 export class ClothesService {
@@ -44,6 +45,13 @@ export class ClothesService {
     add(clothesItem: ClothesItem) {
         var url = this.baseUrl;
         return this.http.post(url, JSON.stringify(clothesItem),
+            this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
+    }
+
+    // calls the POST method to add a new Log item
+    addLog(logItem: LogItem) {
+        var url = this.baseUrl + "AddLog/";
+        return this.http.post(url, JSON.stringify(logItem),
             this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
     }
 

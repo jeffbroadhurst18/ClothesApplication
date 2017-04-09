@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using ClothesApplication.Data;
 using ClothesApplication.Data.ClothesItems;
 using Nelibur.ObjectMapper;
+using ClothesApplication.Data.History;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -46,7 +47,7 @@ namespace ClothesApplication.Controllers
         [HttpGet("GetType/{num}")]
         public IActionResult GetType(int num)
         {
-            var items = DbContext.ClothesItems.Where(i => i.Type == num).OrderByDescending(i => i.Id).ToArray();
+            var items = DbContext.ClothesItems.Where(i => i.Type == num).OrderBy(i => i.Description).ToArray();
             return new JsonResult(ToClothesItemModelViewList(items), DefaultJsonSettings);
         }
 
@@ -62,6 +63,22 @@ namespace ClothesApplication.Controllers
                 DbContext.ClothesItems.Add(item);
                 DbContext.SaveChanges();
                 return new JsonResult(TinyMapper.Map<ClothesItem>(item), DefaultJsonSettings);
+            }
+            return new StatusCodeResult(500);
+        }
+
+        // POST api/AddLog/
+        [HttpPost("AddLog")]
+        public IActionResult AddLog([FromBody]LogViewModel lvm)
+        {
+            if (lvm != null)
+            {
+                var item = TinyMapper.Map<HistoryItem>(lvm);
+                item.CreatedDate = DateTime.Now;
+                item.LastModifiedDate = DateTime.Now;
+                DbContext.History.Add(item);
+                DbContext.SaveChanges();
+                return new JsonResult(TinyMapper.Map<HistoryItem>(item), DefaultJsonSettings);
             }
             return new StatusCodeResult(500);
         }
