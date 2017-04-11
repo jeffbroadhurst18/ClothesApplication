@@ -70,7 +70,7 @@ export class ClothesDetailViewComponent {
         return false;
     }
 
-    processReturn(clothesItem: any) {
+    processReturn(clothesItem: ClothesItem) {
         this.clothesItem = clothesItem;
         var datePipe = new DatePipe();
         this.clothesItem.LastWornDateString = datePipe.transform(this.clothesItem.LastWornDate, 'dd/MM/yyyy');

@@ -32,5 +32,5 @@
     "typescript": "^1.8.10",
     "ng2-bootstrap": "^1.0.24"
   },
-  "scripts": {"postinstall": "typings install dt~core-js --global"}
+  "scripts": { "postinstall": "typings install dt~core-js --global" }
 }

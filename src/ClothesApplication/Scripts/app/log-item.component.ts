@@ -15,13 +15,9 @@ import { ClothesService } from "./clothes.service";
         <div class="panel-body">
             <form class="item-detail-edit">
                 <div class="form-group">
+                    <label for="historyDate">Top</label>
                     <div class="form-control">
-                        <datepicker [(ngModel)]="logItem.HistoryDate"
-                                    [showWeeks]="true"
-                                    [minDate]="minDate"
-                                    [dateDisabled]="disabledDate"
-                                    [onlyCurrentMonth]=false></datepicker>
-
+                        <input type="date" [(ngModel)]="logItem.HistoryDate" name="historyDate"/>
                     </div> 
                     <label for="top">Top</label>
                     <select id="top" name="input-top" required [(ngModel)]="logItem.TopId" class="form-control">
@@ -55,8 +51,6 @@ export class LogItemComponent implements OnInit {
     shoes: Array<ClothesItem>;
     errorMessage: string;
     datePipe: DatePipe;
-    minDate: Date;
-    disabledDate: { dt: Date, mode: string };
 
     constructor(private clothesService: ClothesService,
         private router: Router,
@@ -68,7 +62,6 @@ export class LogItemComponent implements OnInit {
         this.logItem.HistoryDate = new Date();
         this.logItem.CreatedDate = new Date();
         this.logItem.LastModifiedDate = new Date();
-        this.minDate = new Date(2017, 1, 1);
      }
 
     ngOnInit() {

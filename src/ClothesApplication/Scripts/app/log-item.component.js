@@ -41,7 +41,6 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./log",
                     this.logItem.HistoryDate = new Date();
                     this.logItem.CreatedDate = new Date();
                     this.logItem.LastModifiedDate = new Date();
-                    this.minDate = new Date(2017, 1, 1);
                 }
                 ngOnInit() {
                     this.clothesService.getClothesItemsByType(1).subscribe(clothesItem => this.tops = this.processResult(clothesItem), error => this.errorMessage = error);
@@ -74,13 +73,9 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./log",
         <div class="panel-body">
             <form class="item-detail-edit">
                 <div class="form-group">
+                    <label for="historyDate">Top</label>
                     <div class="form-control">
-                        <datepicker [(ngModel)]="logItem.HistoryDate"
-                                    [showWeeks]="true"
-                                    [minDate]="minDate"
-                                    [dateDisabled]="disabledDate"
-                                    [onlyCurrentMonth]=false></datepicker>
-
+                        <input type="date" [(ngModel)]="logItem.HistoryDate" name="historyDate"/>
                     </div> 
                     <label for="top">Top</label>
                     <select id="top" name="input-top" required [(ngModel)]="logItem.TopId" class="form-control">

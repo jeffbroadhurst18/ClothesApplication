@@ -26,8 +26,11 @@ import { Router } from '@angular/router';
                 <li [class.active]="isActive(['clothesItem/edit',0])">
                     <a class="add" [routerLink]="['clothesItem/edit', 0]">Add new item</a>
                 </li>
-                    <li [class.active]="isActive(['logItem'])">
+                <li [class.active]="isActive(['logItem'])">
                     <a class="log" [routerLink]="['logItem']">Add Log</a>
+                </li>
+                <li [class.active]="isActive(['history'])">
+                    <a class="history" [routerLink]="['history']">View History</a>
                 </li>
             </ul>
         </div>

@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { ClothesItem } from "./clothes";
 import { ClothesService } from "./clothes.service";
 import { Category } from "./category";
+import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "clothes-list",
@@ -28,8 +29,8 @@ export class ClothesListComponent implements OnInit {
     selectedItem: ClothesItem;
     errorMessage: string;
 
-    constructor(private clothesService: ClothesService, private router:Router) { }
-    
+    constructor(private clothesService: ClothesService, private router: Router) { }
+
     ngOnInit() {
         this.categories = this.clothesService.getCategories();
         var s = null;
@@ -49,29 +50,23 @@ export class ClothesListComponent implements OnInit {
                 break;
         }
         s.subscribe(
-            result => this.clothes = result,
+            result => this.clothes = this.processResult(result),
             error => this.errorMessage = <any>error
         );
     }
-
-    //getCategoryItems() {
-    //    this.clothesService.getClothesItemsByType(this.selectedCategory)
-    //        .subscribe(result => this.clothes = this.processResult(result))
-    //}
-
-    //onChange(newVal: string) {
-    //    var bits = newVal.split(":");
-    //    this.selectedCategory = +bits[1];
-    //    this.getCategoryItems();
-    //    this.selectedCategoryName = this.clothesService.getCategoryName(this.selectedCategory);
-    //}
 
     onSelect(item: ClothesItem) {
         this.selectedItem = item;
         this.router.navigate(['clothesItem/view', this.selectedItem.Id]);
     }
 
-    //processResult(result: any) {
-    //        return result;
-    //}
+    processResult(clothesItems: Array<ClothesItem>)
+    {
+        var datePipe = new DatePipe();
+        for (var i = 0; i < clothesItems.length; i++)
+        {
+            clothesItems[i].LastWornDateString = datePipe.transform(clothesItems[i].LastWornDate, 'dd/MM/yyyy');
+        }
+        return clothesItems;
+    }
 }

@@ -17,6 +17,10 @@ namespace ClothesApplication.Controllers
     public class ClothesController : Controller
     {
         private ApplicationDbContext DbContext;
+        private const int Tops = 1;
+        private const int Trousers = 2;
+        private const int Shoes = 3;
+
 
         public ClothesController(ApplicationDbContext context)
         {
@@ -78,6 +82,9 @@ namespace ClothesApplication.Controllers
                 item.LastModifiedDate = DateTime.Now;
                 DbContext.History.Add(item);
                 DbContext.SaveChanges();
+                StoreWearDetails(Tops, item.TopId, lvm.HistoryDate);
+                StoreWearDetails(Trousers, item.TrousersId, lvm.HistoryDate);
+                StoreWearDetails(Shoes, item.ShoesId, lvm.HistoryDate);
                 return new JsonResult(TinyMapper.Map<HistoryItem>(item), DefaultJsonSettings);
             }
             return new StatusCodeResult(500);
@@ -132,6 +139,16 @@ namespace ClothesApplication.Controllers
                 lst.Add(TinyMapper.Map<ClothesViewModel>(i));
             };
             return lst;
+        }
+
+        private void StoreWearDetails(int type, int itemId, DateTime historyDate)
+        {
+            ClothesItem clothesItem = DbContext.ClothesItems.Where(i => i.Type == type && i.Id == itemId).First();
+            clothesItem.LastWornDate = historyDate;
+            clothesItem.WornCount++;
+            clothesItem.LastModifiedDate = DateTime.Now;
+            DbContext.Update(clothesItem);
+            DbContext.SaveChanges();
         }
     }
 }

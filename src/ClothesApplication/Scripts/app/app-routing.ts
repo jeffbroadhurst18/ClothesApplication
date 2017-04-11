@@ -6,6 +6,7 @@ import { ClothesDetailViewComponent } from './clothes-detail-view.component';
 import { ClothesDetailEditComponent } from './clothes-detail-edit.component';
 import { LogItemComponent } from './log-item.component';
 import { HomeComponent } from './home.component';
+import { ViewHistoryComponent } from './view-history.component';
 
 const appRoutes: Routes = [
     {
@@ -28,7 +29,10 @@ const appRoutes: Routes = [
         path: "logItem",
         component: LogItemComponent
     },
-   
+    {
+        path: "history",
+        component: ViewHistoryComponent
+    },
 ];
 
 export const AppRoutingProviders: any[] = [

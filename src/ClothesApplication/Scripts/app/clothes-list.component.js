@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "./clothes.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./clothes.service", "@angular/common"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service"], funct
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, clothes_service_1, ClothesListComponent;
+    var core_1, router_1, clothes_service_1, common_1, ClothesListComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -21,6 +21,9 @@ System.register(["@angular/core", "@angular/router", "./clothes.service"], funct
             },
             function (clothes_service_1_1) {
                 clothes_service_1 = clothes_service_1_1;
+            },
+            function (common_1_1) {
+                common_1 = common_1_1;
             }
         ],
         execute: function () {
@@ -47,21 +50,18 @@ System.register(["@angular/core", "@angular/router", "./clothes.service"], funct
                             s = this.clothesService.getClothesItemsByType(3);
                             break;
                     }
-                    s.subscribe(result => this.clothes = result, error => this.errorMessage = error);
+                    s.subscribe(result => this.clothes = this.processResult(result), error => this.errorMessage = error);
                 }
-                //getCategoryItems() {
-                //    this.clothesService.getClothesItemsByType(this.selectedCategory)
-                //        .subscribe(result => this.clothes = this.processResult(result))
-                //}
-                //onChange(newVal: string) {
-                //    var bits = newVal.split(":");
-                //    this.selectedCategory = +bits[1];
-                //    this.getCategoryItems();
-                //    this.selectedCategoryName = this.clothesService.getCategoryName(this.selectedCategory);
-                //}
                 onSelect(item) {
                     this.selectedItem = item;
                     this.router.navigate(['clothesItem/view', this.selectedItem.Id]);
+                }
+                processResult(clothesItems) {
+                    var datePipe = new common_1.DatePipe();
+                    for (var i = 0; i < clothesItems.length; i++) {
+                        clothesItems[i].LastWornDateString = datePipe.transform(clothesItems[i].LastWornDate, 'dd/MM/yyyy');
+                    }
+                    return clothesItems;
                 }
             };
             __decorate([
