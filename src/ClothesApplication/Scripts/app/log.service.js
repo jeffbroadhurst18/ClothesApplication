@@ -27,7 +27,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
             LogService = class LogService {
                 constructor(http) {
                     this.http = http;
-                    this.baseUrl = "api/log/";
+                    this.baseUrl = "api/history/";
                 }
                 getHistory() {
                     var url = this.baseUrl;

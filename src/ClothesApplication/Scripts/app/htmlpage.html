@@ -1,34 +1,27 @@
-﻿<div class="item-container">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <form class="item-detail-edit">
-                <div class="form-group">
-                    <div>
-                        <datepicker [(ngModel)]="logItem.HistoryDate"
-                                    [showWeeks]="true"
-                                    [minDate]="minDate"
-                                    [dateDisabled]="disabledDate"
-                                    [onlyCurrentMonth]=true></datepicker>
-
-                    </div> 
-                    <label for="top">Top</label>
-                    <select id="top" name="input-top" required [(ngModel)]="logItem.TopId" class="form-control">
-                        <option *ngFor="let top of tops" [ngValue]="top.Id">{{top.Description}} - Worn {{top.WornCount}} times - Last Worn {{top.LastWornDateString}}</option>
-                    </select>
-                    <label for="trousers">Trousers</label>
-                    <select id="top" name="input-trousers" required [(ngModel)]="logItem.TrousersId" class="form-control">
-                        <option *ngFor="let trouser of trousers" [ngValue]="trouser.Id">{{trouser.Description}} - Worn {{trouser.WornCount}} times - Last Worn {{trouser.LastWornDateString}}</option>
-                    </select>
-                    <label for="shoes">Shoes</label>
-                    <select id="top" name="input-shoes" required [(ngModel)]="logItem.ShoesId" class="form-control">
-                        <option *ngFor="let shoe of shoes" [ngValue]="shoe.Id">{{shoe.Description}} - Worn {{shoe.WornCount}} times - Last Worn {{shoe.LastWornDateString}}</option>
-                    </select>
-                </div>
-                <div class="commands insert">
-                    <input type="button" value="Save" class="btn btn-primary" (click)="onInsert(logItem)" />
-                    <input type="button" value="Cancel" class="btn btn-default" (click)="onBack()" />
-                </div>
-            </form>
+﻿<h3>{{title}}</h3>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Top</th>
+                        <th>Trousers</th>
+                        <th>Shoes</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let hist of history"
+                        [class.selected]="hist === selectedItem"
+                        (click)="onSelect(hist)">
+                        <td>{{hist.HistoryDate | transformDate}}</td>
+                        <td>{{hist.Top}}</td>
+                        <td>{{hist.Trousers}}</td>
+                        <td>{{hist.Shoes}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

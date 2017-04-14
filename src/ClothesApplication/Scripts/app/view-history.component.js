@@ -30,7 +30,7 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
                     this.router = router;
                 }
                 ngOnInit() {
-                    this.logService.getHistory().subscribe(result => this.logs = this.processResult(result), error => this.errorMessage = error);
+                    this.logService.getHistory().subscribe(result => this.history = this.processResult(result), error => this.errorMessage = error);
                 }
                 onSelect(item) {
                     this.selectedItem = item;
@@ -45,29 +45,32 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
             ], ViewHistoryComponent.prototype, "class", void 0);
             ViewHistoryComponent = __decorate([
                 core_1.Component({
-                    selector: "clothes-list",
+                    selector: "history",
                     template: `
-    <h3>{{title}}</h3>
-    <ul class="items">
-    <li *ngFor="let hist of history"
-        [class.selected]="hist === selectedItem"
-        (click)="onSelect(hist)">
-        
-    </li>
-    </ul>
-<table class="items">
-    <tr *ngFor="let hist of history"
-        [class.selected]="hist === selectedItem"
-        (click)="onSelect(hist)">
-    <td></td>
-public HistoryDate: Date;
-    public TopId: number;
-    public TrousersId: number;
-    public ShoesId: number;
-    public CreatedDate: Date;
-    public LastModifiedDate: Date;
-    </tr>
-</table>
+   <h3>{{title}}</h3>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <ul class="items historyItems">
+                <li>
+                    <div>Date</div>
+                    <div>Top</div>
+                    <div>Trousers</div>
+                    <div>Shoes</div>
+                </li>
+                <li *ngFor="let hist of history"
+                    [class.selected]="hist === selectedItem"
+                    (click)="onSelect(hist)">
+                    <div>{{hist.HistoryDate | transformDate}}</div>
+                    <div>{{hist.Top}}</div>
+                    <div>{{hist.Trousers}}</div>
+                    <div>{{hist.Shoes}}</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 `
                 }),
                 __metadata("design:paramtypes", [log_service_1.LogService, router_1.Router])

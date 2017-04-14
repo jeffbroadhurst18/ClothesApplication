@@ -10,7 +10,7 @@ System.register(["@angular/core"], function (exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, TransformCategoryPipe;
+    var core_1, TransformCategoryPipe, TransformDatePipe;
     return {
         setters: [
             function (core_1_1) {
@@ -38,6 +38,16 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                 __metadata("design:paramtypes", [])
             ], TransformCategoryPipe);
             exports_1("TransformCategoryPipe", TransformCategoryPipe);
+            TransformDatePipe = class TransformDatePipe {
+                transform(input) {
+                    return this.datePipe.transform(input);
+                }
+            };
+            TransformDatePipe = __decorate([
+                core_1.Pipe({ name: 'transformDate' }),
+                __metadata("design:paramtypes", [])
+            ], TransformDatePipe);
+            exports_1("TransformDatePipe", TransformDatePipe);
         }
     };
 });
