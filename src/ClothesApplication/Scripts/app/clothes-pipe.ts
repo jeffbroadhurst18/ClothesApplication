@@ -17,6 +17,6 @@ export class TransformDatePipe implements PipeTransform {
     datePipe: DatePipe;
     transform(input: Date): string {
         this.datePipe = new DatePipe();
-        return this.datePipe.transform(input);
+        return this.datePipe.transform(input, 'dd/MM/yyyy');
     }
 }

@@ -43,15 +43,6 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./log",
                     this.logItem.LastModifiedDate = new Date();
                 }
                 ngOnInit() {
-                    this.clothesService.getClothesItemsByType(1).subscribe(clothesItem => this.tops = this.processResult(clothesItem), error => this.errorMessage = error);
-                    this.clothesService.getClothesItemsByType(2).subscribe(clothesItem => this.trousers = this.processResult(clothesItem), error => this.errorMessage = error);
-                    this.clothesService.getClothesItemsByType(3).subscribe(clothesItem => this.shoes = this.processResult(clothesItem), error => this.errorMessage = error);
-                }
-                processResult(clothesItems) {
-                    for (var i = 0; i < clothesItems.length; i++) {
-                        clothesItems[i].LastWornDateString = this.datePipe.transform(clothesItems[i].LastWornDate, 'dd/MM/yyyy');
-                    }
-                    return clothesItems;
                 }
                 onInsert(logItem) {
                     this.clothesService.addLog(logItem).subscribe((data) => {
@@ -63,41 +54,61 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./log",
                 onBack() {
                     this.router.navigate([""]);
                 }
+                onNotifyTop(event) {
+                    this.selectedTop = event;
+                }
+                onNotifyTrousers(event) {
+                    this.selectedTrousers = event;
+                }
+                onNotifyShoes(event) {
+                    this.selectedShoes = event;
+                }
             };
             LogItemComponent = __decorate([
                 core_1.Component({
                     selector: "log-item",
                     template: `
-            <div class="item-container">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <form class="item-detail-edit">
-                <div class="form-group">
-                    <label for="historyDate">Top</label>
-                    <div class="form-control">
-                        <input type="date" [(ngModel)]="logItem.HistoryDate" name="historyDate"/>
-                    </div> 
-                    <label for="top">Top</label>
-                    <select id="top" name="input-top" required [(ngModel)]="logItem.TopId" class="form-control">
-                        <option *ngFor="let top of tops" [ngValue]="top.Id">{{top.Description}} - Worn {{top.WornCount}} times - Last Worn {{top.LastWornDateString}}</option>
-                    </select>
-                    <label for="trousers">Trousers</label>
-                    <select id="top" name="input-trousers" required [(ngModel)]="logItem.TrousersId" class="form-control">
-                        <option *ngFor="let trouser of trousers" [ngValue]="trouser.Id">{{trouser.Description}} - Worn {{trouser.WornCount}} times - Last Worn {{trouser.LastWornDateString}}</option>
-                    </select>
-                    <label for="shoes">Shoes</label>
-                    <select id="top" name="input-shoes" required [(ngModel)]="logItem.ShoesId" class="form-control">
-                        <option *ngFor="let shoe of shoes" [ngValue]="shoe.Id">{{shoe.Description}} - Worn {{shoe.WornCount}} times - Last Worn {{shoe.LastWornDateString}}</option>
-                    </select>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="container-fluid">
+                <div class="row">
+                    <h3>Store daily outfit</h3>
                 </div>
-                <div class="commands insert">
-                    <input type="button" value="Save" class="btn btn-primary" (click)="onInsert(logItem)" />
-                    <input type="button" value="Cancel" class="btn btn-default" (click)="onBack()" />
+                <div class="row">
+                    <div class="form-group">
+                        <label for="historyDate" class="historyDate">Date:</label>
+                        <input type="date" [(ngModel)]="logItem.HistoryDate" name="historyDate" />
+                    </div>
                 </div>
-            </form>
+
+            </div>
         </div>
     </div>
 </div>
+<div class="container-fluid">
+    <div class="row">
+       <div class="col-md-4">         
+        <h2>Tops</h2>
+       </div>
+       <div class="col-md-4">         
+        <h2>Trousers</h2>
+       </div>
+       <div class="col-md-4">         
+        <h2>Shoes</h2>
+       </div>
+    </div>
+    <div class="row">
+        <clothes-grid class="tops" (notify)="onNotifyTop($event)"></clothes-grid>        
+        <clothes-grid class="trousers" (notify)="onNotifyTrousers($event)"></clothes-grid>        
+        <clothes-grid class="shoes" (notify)="onNotifyShoes($event)"></clothes-grid>        
+    </div>
+</div>
+Arse
+<div *ngIf="selectedTop">{{selectedTop.Description}}</div>
+<div *ngIf="selectedTrousers">{{selectedTrousers.Description}}</div>
+<div *ngIf="selectedShoes">{{selectedShoes.Description}}</div>
 `
                 }),
                 __metadata("design:paramtypes", [clothes_service_1.ClothesService,

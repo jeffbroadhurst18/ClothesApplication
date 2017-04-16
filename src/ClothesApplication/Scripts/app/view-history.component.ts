@@ -26,6 +26,7 @@ import { TransformDatePipe } from "./clothes-pipe";
                         <th>Top</th>
                         <th>Trousers</th>
                         <th>Shoes</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let hist of history"

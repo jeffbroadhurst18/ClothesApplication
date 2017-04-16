@@ -47,27 +47,37 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
                 core_1.Component({
                     selector: "history",
                     template: `
-   <h3>{{title}}</h3>
+   
 <div class="container-fluid">
+<div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h3>History</h3>
+        </div>
+</div>
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <ul class="items historyItems">
-                <li>
-                    <div>Date</div>
-                    <div>Top</div>
-                    <div>Trousers</div>
-                    <div>Shoes</div>
-                </li>
-                <li *ngFor="let hist of history"
-                    [class.selected]="hist === selectedItem"
-                    (click)="onSelect(hist)">
-                    <div>{{hist.HistoryDate | transformDate}}</div>
-                    <div>{{hist.Top}}</div>
-                    <div>{{hist.Trousers}}</div>
-                    <div>{{hist.Shoes}}</div>
-                </li>
-            </ul>
+            <table class="table table-hover table-bordered historyTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Top</th>
+                        <th>Trousers</th>
+                        <th>Shoes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let hist of history"
+                        [class.selected]="hist === selectedItem"
+                        (click)="onSelect(hist)">
+                        <td>{{hist.HistoryDate | transformDate}}</td>
+                        <td>{{hist.Top}}</td>
+                        <td>{{hist.Trousers}}</td>
+                        <td>{{hist.Shoes}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
