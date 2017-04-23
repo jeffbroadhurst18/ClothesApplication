@@ -17,11 +17,7 @@ namespace ClothesApplication.Controllers
     public class ClothesController : Controller
     {
         private ApplicationDbContext DbContext;
-        private const int Tops = 1;
-        private const int Trousers = 2;
-        private const int Shoes = 3;
-
-
+        
         public ClothesController(ApplicationDbContext context)
         {
             DbContext = context;
@@ -67,25 +63,6 @@ namespace ClothesApplication.Controllers
                 DbContext.ClothesItems.Add(item);
                 DbContext.SaveChanges();
                 return new JsonResult(TinyMapper.Map<ClothesItem>(item), DefaultJsonSettings);
-            }
-            return new StatusCodeResult(500);
-        }
-
-        // POST api/AddLog/
-        [HttpPost("AddLog")]
-        public IActionResult AddLog([FromBody]LogViewModel lvm)
-        {
-            if (lvm != null)
-            {
-                var item = TinyMapper.Map<HistoryItem>(lvm);
-                item.CreatedDate = DateTime.Now;
-                item.LastModifiedDate = DateTime.Now;
-                DbContext.History.Add(item);
-                DbContext.SaveChanges();
-                StoreWearDetails(Tops, item.TopId, lvm.HistoryDate);
-                StoreWearDetails(Trousers, item.TrousersId, lvm.HistoryDate);
-                StoreWearDetails(Shoes, item.ShoesId, lvm.HistoryDate);
-                return new JsonResult(TinyMapper.Map<HistoryItem>(item), DefaultJsonSettings);
             }
             return new StatusCodeResult(500);
         }
@@ -141,14 +118,6 @@ namespace ClothesApplication.Controllers
             return lst;
         }
 
-        private void StoreWearDetails(int type, int itemId, DateTime historyDate)
-        {
-            ClothesItem clothesItem = DbContext.ClothesItems.Where(i => i.Type == type && i.Id == itemId).First();
-            clothesItem.LastWornDate = historyDate;
-            clothesItem.WornCount++;
-            clothesItem.LastModifiedDate = DateTime.Now;
-            DbContext.Update(clothesItem);
-            DbContext.SaveChanges();
-        }
+        
     }
 }

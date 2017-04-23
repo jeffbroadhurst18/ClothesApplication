@@ -284,6 +284,36 @@ log-item {
         background-image: url(/img/tops.png);
         background-color: @color-latest;
     }
+
+    .selectedItems {
+        border:groove 1px black;
+        padding-bottom:20px;
+        background-color: lightgray;
+        margin-bottom:2px;
+        margin-left:100px;
+        margin-right:100px;
+
+        .row{
+            padding-bottom: 2px;
+            padding-top:2px;
+            .selectedTitle{
+                width:70px;
+                display: inline-block;
+            }
+            .selectedValue{
+                display: inline-block;
+                background-color: white;
+                border-style:groove;
+                border-color:darkgray;
+                border-width:1px;
+                width:300px;
+                height:25px;
+            }
+            &.firstRow{
+                height:50px;
+            }
+        }
+    }
 }
 
 clothes-grid {
@@ -309,6 +339,9 @@ clothes-grid {
         th {
             background-color: @color-random;
         }
+    }
+    .selected{
+        background-color:darkgray !important;
     }
 }
 

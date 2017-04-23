@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, http_1, Observable_1, ClothesService;
+    var core_1, http_1, Observable_1, HistoryService;
     return {
         setters: [
             function (core_1_1) {
@@ -24,53 +24,26 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
             }
         ],
         execute: function () {
-            ClothesService = class ClothesService {
+            HistoryService = class HistoryService {
                 constructor(http) {
                     this.http = http;
-                    this.baseUrl = "api/clothes/";
-                    this.categories = new Array();
+                    this.baseUrl = "api/history/";
                 }
-                getCategories() {
-                    var cats = new Array();
-                    cats = [{ id: 1, name: "Tops" }, { id: 2, name: "Trousers" }, { id: 3, name: "Shoes" }];
-                    this.categories = cats;
-                    return cats;
-                }
-                getClothesItemsByType(num) {
-                    var url = this.baseUrl + "GetType/";
-                    if (num != null) {
-                        url += num;
-                    }
-                    return this.http.get(url)
-                        .map(response => response.json())
-                        .catch(this.handleError);
-                }
-                getClothesItem(id) {
+                // calls the POST method to add a new Log item
+                addLog(logItem) {
                     var url = this.baseUrl;
-                    if (id != null) {
-                        url += id;
-                    }
-                    return this.http.get(url)
-                        .map(response => response.json())
-                        .catch(this.handleError);
-                }
-                getCategoryName(id) {
-                    return this.categories[id - 1].name;
-                }
-                // calls the POST method to add a new item
-                add(clothesItem) {
-                    var url = this.baseUrl;
-                    return this.http.post(url, JSON.stringify(clothesItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
-                }
-                // calls the PUT method to update an existing item
-                update(clothesItem) {
-                    var url = this.baseUrl + clothesItem.Id;
-                    return this.http.put(url, JSON.stringify(clothesItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
+                    return this.http.post(url, JSON.stringify(logItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
                 }
                 // Calls Delete
                 delete(id) {
                     var url = this.baseUrl + id;
                     return this.http.delete(url).catch(this.handleError);
+                }
+                getHistory() {
+                    var url = this.baseUrl;
+                    return this.http.get(url)
+                        .map(response => response.json())
+                        .catch(this.handleError);
                 }
                 handleError(error) {
                     console.error(error);
@@ -84,11 +57,11 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                     });
                 }
             };
-            ClothesService = __decorate([
+            HistoryService = __decorate([
                 core_1.Injectable(),
                 __metadata("design:paramtypes", [http_1.Http])
-            ], ClothesService);
-            exports_1("ClothesService", ClothesService);
+            ], HistoryService);
+            exports_1("HistoryService", HistoryService);
         }
     };
 });

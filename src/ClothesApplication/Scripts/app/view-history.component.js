@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "./log.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./history.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, log_service_1, ViewHistoryComponent;
+    var core_1, router_1, history_service_1, ViewHistoryComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -19,24 +19,31 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (log_service_1_1) {
-                log_service_1 = log_service_1_1;
+            function (history_service_1_1) {
+                history_service_1 = history_service_1_1;
             }
         ],
         execute: function () {
             ViewHistoryComponent = class ViewHistoryComponent {
-                constructor(logService, router) {
-                    this.logService = logService;
+                constructor(router, historyService) {
                     this.router = router;
+                    this.historyService = historyService;
                 }
                 ngOnInit() {
-                    this.logService.getHistory().subscribe(result => this.history = this.processResult(result), error => this.errorMessage = error);
+                    this.historyService.getHistory().subscribe(result => this.history = this.processResult(result), error => this.errorMessage = error);
                 }
                 onSelect(item) {
                     this.selectedItem = item;
                 }
                 processResult(logItems) {
                     return logItems;
+                }
+                deleteLog(item) {
+                    this.historyService.delete(item.Id).subscribe((data) => {
+                        console.log("Log Item " + item.Id + " has been deleted");
+                        this.history = this.history.filter(h => h != item);
+                        this.router.navigate(["history"]);
+                    }, (error) => console.log(error));
                 }
             };
             __decorate([
@@ -65,6 +72,7 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
                         <th>Top</th>
                         <th>Trousers</th>
                         <th>Shoes</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +83,7 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
                         <td>{{hist.Top}}</td>
                         <td>{{hist.Trousers}}</td>
                         <td>{{hist.Shoes}}</td>
+                        <td><button (click)="deleteLog(hist)"><span class="glyphicon glyphicon-remove"></span></button></td>
                     </tr>
                 </tbody>
             </table>
@@ -83,7 +92,7 @@ System.register(["@angular/core", "@angular/router", "./log.service"], function 
 </div>
 `
                 }),
-                __metadata("design:paramtypes", [log_service_1.LogService, router_1.Router])
+                __metadata("design:paramtypes", [router_1.Router, history_service_1.HistoryService])
             ], ViewHistoryComponent);
             exports_1("ViewHistoryComponent", ViewHistoryComponent);
         }

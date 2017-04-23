@@ -78,7 +78,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
         [class.selected]="cloth === selectedItem"
         (click)="onSelect(cloth)">
         <div class="title">{{cloth.Description}}</div>
-        <div class="description">{{cloth.LastWornDateString}}</div>
+        <div class="description">{{cloth.Shop}}</div>
     </li>
     </ul>`
                 }),

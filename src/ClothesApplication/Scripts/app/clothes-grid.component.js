@@ -74,7 +74,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     selector: "clothes-grid",
                     template: `
     <div class="col-md-4">
-            <table class="table table-hover table-bordered clothesTable">
+            <table class="table table-bordered clothesTable">
                 <thead>
                     <tr>
                         <th>Description</th>
@@ -85,7 +85,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of items"
-                        [class.selected]="item === selectedItemp"
+                        [class.selected]="item === selectedItem"
                         (click)="onSelect(item)">
                         <td>{{item.Description}}</td>
                         <td>{{item.Shop}}</td>
@@ -94,7 +94,6 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     </tr>
                 </tbody>
             </table>
-            <div *ngIf="selectedItem">{{selectedItem.Description}}</div>
         </div>`
                 }),
                 __metadata("design:paramtypes", [clothes_service_1.ClothesService, router_1.Router])

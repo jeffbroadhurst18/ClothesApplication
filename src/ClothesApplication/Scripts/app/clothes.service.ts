@@ -48,13 +48,6 @@ export class ClothesService {
             this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
     }
 
-    // calls the POST method to add a new Log item
-    addLog(logItem: LogItem) {
-        var url = this.baseUrl + "AddLog/";
-        return this.http.post(url, JSON.stringify(logItem),
-            this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
-    }
-
     // calls the PUT method to update an existing item
     update(clothesItem: ClothesItem)
     {

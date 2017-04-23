@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using ClothesApplication.ViewModels;
 using ClothesApplication.Data.History;
 using Nelibur.ObjectMapper;
+using ClothesApplication.Data.ClothesItems;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,6 +18,9 @@ namespace ClothesApplication.Controllers
     public class HistoryController : Controller
     {
         private ApplicationDbContext DbContext;
+        private const int Tops = 1;
+        private const int Trousers = 2;
+        private const int Shoes = 3;
 
         public HistoryController(ApplicationDbContext context)
         {
@@ -38,10 +42,23 @@ namespace ClothesApplication.Controllers
             return "value";
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        // POST api/
+        [HttpPost()]
+        public IActionResult AddLog([FromBody]LogViewModel lvm)
         {
+            if (lvm != null)
+            {
+                var item = TinyMapper.Map<HistoryItem>(lvm);
+                item.CreatedDate = DateTime.Now;
+                item.LastModifiedDate = DateTime.Now;
+                DbContext.History.Add(item);
+                DbContext.SaveChanges();
+                StoreWearDetails(Tops, item.TopId, lvm.HistoryDate);
+                StoreWearDetails(Trousers, item.TrousersId, lvm.HistoryDate);
+                StoreWearDetails(Shoes, item.ShoesId, lvm.HistoryDate);
+                return new JsonResult(TinyMapper.Map<HistoryItem>(item), DefaultJsonSettings);
+            }
+            return new StatusCodeResult(500);
         }
 
         // PUT api/values/5
@@ -52,8 +69,16 @@ namespace ClothesApplication.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var item = DbContext.History.Where(i => i.Id == id).FirstOrDefault();
+            if (item != null)
+            {
+                DbContext.History.Remove(item);
+                DbContext.SaveChanges();
+                return new OkResult();
+            }
+            return NotFound(new { Error = string.Format("Item Id {0} has not been found", id) });
         }
 
         private JsonSerializerSettings DefaultJsonSettings
@@ -89,6 +114,16 @@ namespace ClothesApplication.Controllers
         {
             var result = DbContext.ClothesItems.Where(x => x.Id == i).FirstOrDefault();
             return result.Description;
+        }
+
+        private void StoreWearDetails(int type, int itemId, DateTime historyDate)
+        {
+            ClothesItem clothesItem = DbContext.ClothesItems.Where(i => i.Type == type && i.Id == itemId).First();
+            clothesItem.LastWornDate = historyDate;
+            clothesItem.WornCount++;
+            clothesItem.LastModifiedDate = DateTime.Now;
+            DbContext.Update(clothesItem);
+            DbContext.SaveChanges();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, NgModule, Input } from "@angular/core";
 import { Router } from "@angular/router";
 import { LogItem } from "./log";
-import { LogService } from "./log.service";
+import { HistoryService } from "./history.service";
 import { Category } from "./category";
 import { TransformDatePipe } from "./clothes-pipe";
 
@@ -26,6 +26,7 @@ import { TransformDatePipe } from "./clothes-pipe";
                         <th>Top</th>
                         <th>Trousers</th>
                         <th>Shoes</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,7 @@ import { TransformDatePipe } from "./clothes-pipe";
                         <td>{{hist.Top}}</td>
                         <td>{{hist.Trousers}}</td>
                         <td>{{hist.Shoes}}</td>
+                        <td><button (click)="deleteLog(hist)"><span class="glyphicon glyphicon-remove"></span></button></td>
                     </tr>
                 </tbody>
             </table>
@@ -53,10 +55,10 @@ export class ViewHistoryComponent implements OnInit {
     errorMessage: string;
     selectedItem: LogItem;
 
-    constructor(private logService: LogService, private router: Router) { }
+    constructor(private router: Router, private historyService: HistoryService) { }
 
     ngOnInit() {
-            this.logService.getHistory().subscribe(
+            this.historyService.getHistory().subscribe(
             result => this.history = this.processResult(result),
             error => this.errorMessage = <any>error
         );
@@ -68,5 +70,16 @@ export class ViewHistoryComponent implements OnInit {
 
     processResult(logItems: Array<LogItem>) {
         return logItems;
+    }
+
+    deleteLog(item: LogItem)
+    {
+        this.historyService.delete(item.Id).subscribe((data) => {
+            console.log("Log Item " + item.Id + " has been deleted");
+            this.history = this.history.filter(h => h != item)
+            this.router.navigate(["history"]);
+        },
+            (error) => console.log(error)
+        );
     }
 }

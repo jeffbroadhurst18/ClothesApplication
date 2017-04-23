@@ -4,43 +4,43 @@ import { DatePipe } from "@angular/common";
 import { LogItem } from "./log";
 import { ClothesItem } from "./clothes";
 import { ClothesService } from "./clothes.service";
+import { HistoryService } from "./history.service";
 
 @Component({
     selector: "log-item",
     template: `
 <div class="container-fluid">
-    <div class="row">
+    <div class="row selectedItems">
         <div class="col-md-1"></div>
         <div class="col-md-4">
             <div class="container-fluid">
                 <div class="row">
-                    <h3>Store daily outfit</h3>
+                    <h3>Store Daily Outfit</h3>
                 </div>
                 <div class="row">
                     <div class="form-group">
                         <label for="historyDate" class="historyDate">Date:</label>
-                        <input type="date" [(ngModel)]="selectedDate" name="historyDate" />
+                        <input type="date" [(ngModel)]="selectedDate" name="historyDate" (click)="dateEntered()" />
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="col-md-4">
             <div class="container-fluid">
-                <div class="row">
-                    <h3>Selected Items</h3>
+                <div class="row firstRow">
                 </div>
                 <div class="row">
-                    <div>Top: <span *ngIf="selectedTop">{{selectedTop.Description}}</span></div>
+                    <div class="selectedTitle">Top:</div><div class="selectedValue"><span *ngIf="selectedTop">{{selectedTop.Description}}</span></div>
                 </div>
                 <div class="row">
-                    <div>Trousers: <span *ngIf="selectedTrousers">{{selectedTrousers.Description}}</span></div>
+                    <div class="selectedTitle">Trousers:</div><div class="selectedValue"><span *ngIf="selectedTrousers">{{selectedTrousers.Description}}</span></div>
                 </div>
                 <div class="row">
-                    <div>Shoes: <span *ngIf="selectedShoes">{{selectedShoes.Description}}</span></div>
+                    <div class="selectedTitle">Shoes:</div><div class="selectedValue"><span *ngIf="selectedShoes">{{selectedShoes.Description}}</span></div>
                 </div>
                 <div class="row">
                     <button [disabled]="!selectedAll" (click)="save()">Save</button>
+                    <button (click)="onBack()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -76,8 +76,10 @@ export class LogItemComponent implements OnInit {
     selectedTrousers: ClothesItem;
     selectedShoes: ClothesItem;
     selectedAll: Boolean;
+    calendarEntered: Boolean;
 
     constructor(private clothesService: ClothesService,
+        private historyService: HistoryService,
         private router: Router,
         private activatedRoute: ActivatedRoute
     ) {
@@ -88,6 +90,7 @@ export class LogItemComponent implements OnInit {
         this.logItem.CreatedDate = new Date();
         this.logItem.LastModifiedDate = new Date();
         this.selectedAll = false;
+        this.calendarEntered = false;
      }
 
     ngOnInit() {
@@ -95,6 +98,11 @@ export class LogItemComponent implements OnInit {
     }
 
     private save() {
+        if (this.selectedDate == null)
+        {
+            alert("Ensure date has been completed");
+            return;
+        }
         this.logItem.TopId = this.selectedTop.Id;
         this.logItem.TrousersId = this.selectedTrousers.Id;
         this.logItem.ShoesId = this.selectedShoes.Id;
@@ -107,7 +115,7 @@ export class LogItemComponent implements OnInit {
     }
 
     private onInsert(logItem: LogItem) {
-        this.clothesService.addLog(logItem).subscribe((data) => {
+        this.historyService.addLog(logItem).subscribe((data) => {
             this.logItem = data;
             console.log("Item " + this.logItem.Id + " has been added");
             this.router.navigate([""]);
@@ -149,10 +157,17 @@ export class LogItemComponent implements OnInit {
             this.selectedAll = false;
             return;
         }
-        if (this.selectedDate == null) {
+        if (this.calendarEntered == false) {
             this.selectedAll = false;
             return;
         }
+
         this.selectedAll = true;
+    }
+
+    private dateEntered()
+    {
+        this.calendarEntered = true;
+        this.checkAllSelected();
     }
 }
