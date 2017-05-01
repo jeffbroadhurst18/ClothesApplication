@@ -12,10 +12,10 @@ import { DatePipe } from "@angular/common";
             <table class="table table-bordered clothesTable">
                 <thead>
                     <tr>
-                        <th>Description</th>
-                        <th>Shop</th>
-                        <th>Last worn</th>
-                        <th>Times worn</th>
+                        <th [class.selectedCol]="selCol == 1" (click)="onSelectCol(1)">Description</th>
+                        <th [class.selectedCol]="selCol == 2" (click)="onSelectCol(2)">Shop</th>
+                        <th [class.selectedCol]="selCol == 3" (click)="onSelectCol(3)">Last worn</th>
+                        <th [class.selectedCol]="selCol == 4" (click)="onSelectCol(4)">Times worn</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,12 +39,15 @@ export class ClothesGridComponent implements OnInit {
     errorMessage: string;
     datePipe: DatePipe;
     items: Array<ClothesItem>;
+    selCol: Number;
+    compareAsc: Boolean;
 
     constructor(private clothesService: ClothesService, private router: Router) { }
 
     ngOnInit() {
         var s = null;
         this.datePipe = new DatePipe();
+        this.selCol = 0;
 
         switch (this.class) {
             case "tops":
@@ -75,4 +78,103 @@ export class ClothesGridComponent implements OnInit {
         }
         return clothesItems;
     }
-}
+
+    onSelectCol(num: Number) {
+        //same column
+        if (this.selCol != null && this.selCol == num) {
+            this.compareAsc = !this.compareAsc;
+        }
+        else {
+            //new column
+            this.selCol = num;
+            this.compareAsc = true;
+        }
+
+        this.sortItems(this.compareAsc, num);
+    }
+
+    sortItems(compareAsc: Boolean, num: Number) {
+        if (compareAsc) {
+        this.items = this.sort(this.items);
+        }
+        else {
+            this.items = this.sortDesc(this.items);
+        }
+    }
+
+    sort(clothesList: ClothesItem[]): ClothesItem[] {
+        switch (this.selCol) {
+            case 1:
+            default:
+                return clothesList.sort(this.compareDesc);
+            case 2:
+                return clothesList.sort(this.compareShop);
+            case 3:
+                return clothesList.sort(this.compareLast);
+            case 4:
+                return clothesList.sort(this.compareTimes);
+        }
+    }
+
+    sortDesc(clothesList: ClothesItem[]): ClothesItem[] {
+        switch (this.selCol) {
+            case 1:
+            default:
+                return clothesList.sort(this.compareDescAlt);
+            case 2:
+                return clothesList.sort(this.compareShopAlt);
+            case 3:
+                return clothesList.sort(this.compareLastAlt);
+            case 4:
+                return clothesList.sort(this.compareTimesAlt);
+        }
+    }
+
+        compareDesc(a: ClothesItem, b: ClothesItem) {
+            if (a.Description > b.Description) return 1;
+            if (a.Description < b.Description) return -1;
+            return 0;
+        }
+
+        compareDescAlt(a: ClothesItem, b: ClothesItem) {
+            if (a.Description < b.Description) return 1;
+            if (a.Description > b.Description) return -1;
+            return 0;
+        }
+
+        compareShop(a: ClothesItem, b: ClothesItem) {
+            if (a.Shop > b.Shop) return 1;
+            if (a.Shop < b.Shop) return -1;
+            return 0;
+        }
+
+        compareShopAlt(a: ClothesItem, b: ClothesItem) {
+            if (a.Shop < b.Shop) return 1;
+            if (a.Shop > b.Shop) return -1;
+            return 0;
+        }
+
+        compareLast(a: ClothesItem, b: ClothesItem) {
+            if (a.LastWornDate > b.LastWornDate) return 1;
+            if (a.LastWornDate < b.LastWornDate) return -1;
+            return 0;
+        }
+
+        compareLastAlt(a: ClothesItem, b: ClothesItem) {
+            if (a.LastWornDate < b.LastWornDate) return 1;
+            if (a.LastWornDate > b.LastWornDate) return -1;
+            return 0;
+        }
+
+        compareTimes(a: ClothesItem, b: ClothesItem) {
+            if (a.WornCount > b.WornCount) return 1;
+            if (a.WornCount < b.WornCount) return -1;
+            return 0;
+        }
+
+        compareTimesAlt(a: ClothesItem, b: ClothesItem) {
+            if (a.WornCount < b.WornCount) return 1;
+            if (a.WornCount > b.WornCount) return -1;
+            return 0;
+        }
+    }

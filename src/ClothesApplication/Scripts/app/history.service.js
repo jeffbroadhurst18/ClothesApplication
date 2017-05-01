@@ -45,6 +45,12 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                         .map(response => response.json())
                         .catch(this.handleError);
                 }
+                getFilteredHistory(itemId, categoryId) {
+                    var url = this.baseUrl + "GetFiltered/" + itemId + "/" + categoryId;
+                    return this.http.get(url)
+                        .map(response => response.json())
+                        .catch(this.handleError);
+                }
                 handleError(error) {
                     console.error(error);
                     return Observable_1.Observable.throw(error.json().error || "Server Error");

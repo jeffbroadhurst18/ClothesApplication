@@ -15,13 +15,16 @@ import { ClothesGridComponent } from "./clothes-grid.component";
 import { LogItemComponent } from "./log-item.component";
 import { HomeComponent } from "./home.component";
 import { ViewHistoryComponent } from './view-history.component';
+import { FilteredHistoryComponent } from './filtered-history.component';
 import { ClothesService } from "./clothes.service";
 import { HistoryService } from "./history.service";
 import { TransformCategoryPipe } from "./clothes-pipe";
 import { TransformDatePipe } from "./clothes-pipe";
 
 @NgModule({
-    declarations: [AppComponent, ClothesListComponent, ClothesDetailViewComponent, ClothesDetailEditComponent,ClothesGridComponent,HomeComponent,LogItemComponent,ViewHistoryComponent,TransformCategoryPipe,TransformDatePipe],
+    declarations: [AppComponent, ClothesListComponent, ClothesDetailViewComponent,
+        ClothesDetailEditComponent, ClothesGridComponent, HomeComponent, LogItemComponent,
+        ViewHistoryComponent, FilteredHistoryComponent, TransformCategoryPipe, TransformDatePipe],
     imports: [BrowserModule, HttpModule, AppRouting,FormsModule,ReactiveFormsModule,RouterModule],
     providers: [ClothesService,HistoryService],
     bootstrap : [ AppComponent ]

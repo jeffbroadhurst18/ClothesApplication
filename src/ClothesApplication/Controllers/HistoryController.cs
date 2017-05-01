@@ -42,6 +42,29 @@ namespace ClothesApplication.Controllers
             return "value";
         }
 
+        [HttpGet("GetFiltered/{itemId}/{categoryId}")]
+        public IActionResult GetFiltered(int itemId, int categoryId)
+        {
+            IQueryable<HistoryItem> items;
+            switch (categoryId)
+            {
+                case Tops:
+                    items = DbContext.History.Where(i => i.TopId == itemId).OrderByDescending(i => i.HistoryDate);
+                    break;
+                case Trousers:
+                    items = DbContext.History.Where(i => i.TrousersId == itemId).OrderByDescending(i => i.HistoryDate);
+                    break;
+                case Shoes:
+                    items = DbContext.History.Where(i => i.ShoesId == itemId).OrderByDescending(i => i.HistoryDate);
+                    break;
+                default:
+                    items = null;
+                    break;
+            }
+            return new JsonResult(ToHistoryModelViewList(items), DefaultJsonSettings);
+        }
+
+
         // POST api/
         [HttpPost()]
         public IActionResult AddLog([FromBody]LogViewModel lvm)
@@ -53,9 +76,9 @@ namespace ClothesApplication.Controllers
                 item.LastModifiedDate = DateTime.Now;
                 DbContext.History.Add(item);
                 DbContext.SaveChanges();
-                StoreWearDetails(Tops, item.TopId, lvm.HistoryDate);
-                StoreWearDetails(Trousers, item.TrousersId, lvm.HistoryDate);
-                StoreWearDetails(Shoes, item.ShoesId, lvm.HistoryDate);
+                StoreWearDetails(Tops, item.TopId);
+                StoreWearDetails(Trousers, item.TrousersId);
+                StoreWearDetails(Shoes, item.ShoesId);
                 return new JsonResult(TinyMapper.Map<HistoryItem>(item), DefaultJsonSettings);
             }
             return new StatusCodeResult(500);
@@ -74,8 +97,7 @@ namespace ClothesApplication.Controllers
             var item = DbContext.History.Where(i => i.Id == id).FirstOrDefault();
             if (item != null)
             {
-                DbContext.History.Remove(item);
-                DbContext.SaveChanges();
+                DecrementCounts(item);
                 return new OkResult();
             }
             return NotFound(new { Error = string.Format("Item Id {0} has not been found", id) });
@@ -116,14 +138,56 @@ namespace ClothesApplication.Controllers
             return result.Description;
         }
 
-        private void StoreWearDetails(int type, int itemId, DateTime historyDate)
+        private void StoreWearDetails(int type, int itemId)
         {
             ClothesItem clothesItem = DbContext.ClothesItems.Where(i => i.Type == type && i.Id == itemId).First();
-            clothesItem.LastWornDate = historyDate;
+            HistoryItem lastWorn = new HistoryItem();
+
+            switch (type)
+            {
+                case 1:
+                    lastWorn = DbContext.History.Where(j => j.TopId == itemId).OrderByDescending(x => x.HistoryDate).FirstOrDefault();
+                    break;
+                case 2:
+                    lastWorn = DbContext.History.Where(j => j.TrousersId == itemId).OrderByDescending(x => x.HistoryDate).FirstOrDefault();
+                    break;
+                case 3:
+                    lastWorn = DbContext.History.Where(j => j.ShoesId == itemId).OrderByDescending(x => x.HistoryDate).FirstOrDefault();
+                    break;
+            }
+
+            clothesItem.LastWornDate = lastWorn.HistoryDate != null ? lastWorn.HistoryDate : new DateTime(2000, 1, 1);
             clothesItem.WornCount++;
             clothesItem.LastModifiedDate = DateTime.Now;
             DbContext.Update(clothesItem);
             DbContext.SaveChanges();
+        }
+
+        private void DecrementCounts(HistoryItem historyItem)
+        {
+            DbContext.History.Remove(historyItem);
+            DbContext.SaveChanges();
+
+            var top = DbContext.ClothesItems.Where(i => i.Id == historyItem.TopId).FirstOrDefault();
+            var lastWornTop = DbContext.History.Where(j => j.TopId == historyItem.TopId).OrderByDescending(x => x.HistoryDate).FirstOrDefault();
+            top.WornCount--;
+            top.LastWornDate = lastWornTop != null ? lastWornTop.HistoryDate : new DateTime(2000, 1, 1);
+            DbContext.Update(top);
+
+            var trousers = DbContext.ClothesItems.Where(i => i.Id == historyItem.TrousersId).FirstOrDefault();
+            var lastWornTrousers = DbContext.History.Where(j => j.TrousersId == historyItem.TrousersId).OrderByDescending(x => x.HistoryDate).FirstOrDefault();
+            trousers.WornCount--;
+            trousers.LastWornDate = lastWornTrousers != null ? lastWornTrousers.HistoryDate : new DateTime(2000, 1, 1);
+            DbContext.Update(trousers);
+
+            var shoes = DbContext.ClothesItems.Where(i => i.Id == historyItem.ShoesId).FirstOrDefault();
+            var lastWornShoes = DbContext.History.Where(j => j.ShoesId == historyItem.ShoesId).OrderByDescending(x => x.HistoryDate).FirstOrDefault();
+            shoes.WornCount--;
+            shoes.LastWornDate = lastWornShoes != null ? lastWornShoes.HistoryDate : new DateTime(2000, 1, 1);
+            DbContext.Update(shoes);
+
+            DbContext.SaveChanges();
+
         }
     }
 }

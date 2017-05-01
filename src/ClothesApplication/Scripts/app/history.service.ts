@@ -30,6 +30,14 @@ export class HistoryService {
             .catch(this.handleError);
     }
 
+    getFilteredHistory(itemId, categoryId)
+    {
+        var url = this.baseUrl + "GetFiltered/" + itemId + "/" + categoryId;
+        return this.http.get(url)
+            .map(response => response.json())
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response) {
         console.error(error);
         return Observable.throw(error.json().error || "Server Error");

@@ -36,6 +36,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                 ngOnInit() {
                     var s = null;
                     this.datePipe = new common_1.DatePipe();
+                    this.selCol = 0;
                     switch (this.class) {
                         case "tops":
                         default:
@@ -60,6 +61,108 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     }
                     return clothesItems;
                 }
+                onSelectCol(num) {
+                    //same column
+                    if (this.selCol != null && this.selCol == num) {
+                        this.compareAsc = !this.compareAsc;
+                    }
+                    else {
+                        //new column
+                        this.selCol = num;
+                        this.compareAsc = true;
+                    }
+                    this.sortItems(this.compareAsc, num);
+                }
+                sortItems(compareAsc, num) {
+                    if (compareAsc) {
+                        this.items = this.sort(this.items);
+                    }
+                    else {
+                        this.items = this.sortDesc(this.items);
+                    }
+                }
+                sort(clothesList) {
+                    switch (this.selCol) {
+                        case 1:
+                        default:
+                            return clothesList.sort(this.compareDesc);
+                        case 2:
+                            return clothesList.sort(this.compareShop);
+                        case 3:
+                            return clothesList.sort(this.compareLast);
+                        case 4:
+                            return clothesList.sort(this.compareTimes);
+                    }
+                }
+                sortDesc(clothesList) {
+                    switch (this.selCol) {
+                        case 1:
+                        default:
+                            return clothesList.sort(this.compareDescAlt);
+                        case 2:
+                            return clothesList.sort(this.compareShopAlt);
+                        case 3:
+                            return clothesList.sort(this.compareLastAlt);
+                        case 4:
+                            return clothesList.sort(this.compareTimesAlt);
+                    }
+                }
+                compareDesc(a, b) {
+                    if (a.Description > b.Description)
+                        return 1;
+                    if (a.Description < b.Description)
+                        return -1;
+                    return 0;
+                }
+                compareDescAlt(a, b) {
+                    if (a.Description < b.Description)
+                        return 1;
+                    if (a.Description > b.Description)
+                        return -1;
+                    return 0;
+                }
+                compareShop(a, b) {
+                    if (a.Shop > b.Shop)
+                        return 1;
+                    if (a.Shop < b.Shop)
+                        return -1;
+                    return 0;
+                }
+                compareShopAlt(a, b) {
+                    if (a.Shop < b.Shop)
+                        return 1;
+                    if (a.Shop > b.Shop)
+                        return -1;
+                    return 0;
+                }
+                compareLast(a, b) {
+                    if (a.LastWornDate > b.LastWornDate)
+                        return 1;
+                    if (a.LastWornDate < b.LastWornDate)
+                        return -1;
+                    return 0;
+                }
+                compareLastAlt(a, b) {
+                    if (a.LastWornDate < b.LastWornDate)
+                        return 1;
+                    if (a.LastWornDate > b.LastWornDate)
+                        return -1;
+                    return 0;
+                }
+                compareTimes(a, b) {
+                    if (a.WornCount > b.WornCount)
+                        return 1;
+                    if (a.WornCount < b.WornCount)
+                        return -1;
+                    return 0;
+                }
+                compareTimesAlt(a, b) {
+                    if (a.WornCount < b.WornCount)
+                        return 1;
+                    if (a.WornCount > b.WornCount)
+                        return -1;
+                    return 0;
+                }
             };
             __decorate([
                 core_1.Input(),
@@ -77,10 +180,10 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
             <table class="table table-bordered clothesTable">
                 <thead>
                     <tr>
-                        <th>Description</th>
-                        <th>Shop</th>
-                        <th>Last worn</th>
-                        <th>Times worn</th>
+                        <th [class.selectedCol]="selCol == 1" (click)="onSelectCol(1)">Description</th>
+                        <th [class.selectedCol]="selCol == 2" (click)="onSelectCol(2)">Shop</th>
+                        <th [class.selectedCol]="selCol == 3" (click)="onSelectCol(3)">Last worn</th>
+                        <th [class.selectedCol]="selCol == 4" (click)="onSelectCol(4)">Times worn</th>
                     </tr>
                 </thead>
                 <tbody>

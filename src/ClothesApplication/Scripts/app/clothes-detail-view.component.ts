@@ -5,6 +5,7 @@ import { ClothesItem } from "./clothes";
 import { ClothesService } from "./clothes.service";
 import { Category } from "./category";
 import { TransformCategoryPipe } from "./clothes-pipe";
+import { FilteredHistoryComponent } from "./filtered-history.component";
 
 @Component({
     selector: "clothes-detail-view",
@@ -31,6 +32,9 @@ import { TransformCategoryPipe } from "./clothes-pipe";
                                 <tr><td class="clothesLabel">Last Worn</td><td class="words">{{clothesItem.LastWornDateString}}</td></tr>
                                 <tr><td class="clothesLabel">Number of times worn</td><td class="words">{{clothesItem.WornCount}}</td></tr>
                             </table>
+                            <span class="filteredHistory">    
+                            <filtered-history [categoryId]="clothesItem.Type" [itemId]="clothesItem.Id"></filtered-history>
+                            </span>
                         </div>
                     </div>
                 </div>

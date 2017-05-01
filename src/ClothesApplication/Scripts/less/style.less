@@ -192,6 +192,11 @@ clothes-list {
         .words {
             color: #00008B;
         }
+
+        .filteredHistory {
+            float: right;
+            width: 1000px;
+        }
     }
 }
 
@@ -242,6 +247,17 @@ form.item-detail-edit {
     background-color: @color-latest;
 }
 
+.filteredTable {
+    th {
+        font-size: 10px;
+        background-color: #4682B4;
+    }
+
+    td {
+        font-size: 10px !important;
+    }
+}
+
 log-item {
     h3 {
         color: black;
@@ -286,31 +302,34 @@ log-item {
     }
 
     .selectedItems {
-        border:groove 1px black;
-        padding-bottom:20px;
+        border: groove 1px black;
+        padding-bottom: 20px;
         background-color: lightgray;
-        margin-bottom:2px;
-        margin-left:100px;
-        margin-right:100px;
+        margin-bottom: 2px;
+        margin-left: 100px;
+        margin-right: 100px;
 
-        .row{
+        .row {
             padding-bottom: 2px;
-            padding-top:2px;
-            .selectedTitle{
-                width:70px;
+            padding-top: 2px;
+
+            .selectedTitle {
+                width: 70px;
                 display: inline-block;
             }
-            .selectedValue{
+
+            .selectedValue {
                 display: inline-block;
                 background-color: white;
-                border-style:groove;
-                border-color:darkgray;
-                border-width:1px;
-                width:300px;
-                height:25px;
+                border-style: groove;
+                border-color: darkgray;
+                border-width: 1px;
+                width: 300px;
+                height: 25px;
             }
-            &.firstRow{
-                height:50px;
+
+            &.firstRow {
+                height: 50px;
             }
         }
     }
@@ -340,9 +359,18 @@ clothes-grid {
             background-color: @color-random;
         }
     }
-    .selected{
-        background-color:darkgray !important;
+
+    .selected {
+        background-color: darkgray !important;
+    }
+
+    .selectedCol {
+        color: yellow;
     }
 }
 
-
+filtered-history{
+    .selected{
+        font-weight:bold;
+    }
+}
