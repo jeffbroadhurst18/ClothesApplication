@@ -7,16 +7,7 @@ import { DatePipe } from "@angular/common";
 
 @Component({
     selector: "clothes-list",
-    template: `
-    <h3>{{title}}</h3>
-    <ul class="items">
-    <li *ngFor="let cloth of clothes"
-        [class.selected]="cloth === selectedItem"
-        (click)="onSelect(cloth)">
-        <div class="title">{{cloth.Description}}</div>
-        <div class="description">{{cloth.Shop}}</div>
-    </li>
-    </ul>`
+    templateUrl: "./app/clothes-list.component.html"
 })
 
 export class ClothesListComponent implements OnInit {

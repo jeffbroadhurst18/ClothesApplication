@@ -26,16 +26,7 @@ System.register(["@angular/core"], function (exports_1, context_1) {
             HomeComponent = __decorate([
                 core_1.Component({
                     selector: "home",
-                    template: `<h2>A directory of Rebecca's wardrobe</h2>
-               <div class="col-md-4">
-               <clothes-list class="tops"></clothes-list>
-               </div>
-               <div class="col-md-4">
-               <clothes-list class="trousers"></clothes-list>
-               </div>
-               <div class="col-md-4">               
-               <clothes-list class="shoes"></clothes-list>
-               </div>`
+                    templateUrl: "home.component.html"
                 }),
                 __metadata("design:paramtypes", [])
             ], HomeComponent);

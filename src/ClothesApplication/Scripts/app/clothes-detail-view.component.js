@@ -107,7 +107,9 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                                 <tr><td class="clothesLabel">Last Worn</td><td class="words">{{clothesItem.LastWornDateString}}</td></tr>
                                 <tr><td class="clothesLabel">Number of times worn</td><td class="words">{{clothesItem.WornCount}}</td></tr>
                             </table>
-                                <filtered-history [categoryId]="clothesItem.Type" [itemId]="clothesItem.Id"></filtered-history>
+                            <span class="filteredHistory">    
+                            <filtered-history [categoryId]="clothesItem.Type" [itemId]="clothesItem.Id"></filtered-history>
+                            </span>
                         </div>
                     </div>
                 </div>
