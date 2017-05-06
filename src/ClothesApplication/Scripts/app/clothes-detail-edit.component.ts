@@ -7,53 +7,7 @@ import { Category } from "./category";
 
 @Component({
     selector: "clothes-detail-edit",
-    template: `
-            <div *ngIf="clothesItem" class="item-container">
-    <h2>
-        <a href="#" (click)="onBack()">&laquo;Back to Home</a>
-    </h2>
-    <div class="item-container">
-        <ul class="nav nav-tabs">
-            <li role="presentation">
-                <a href="#" class="active">Edit</a>
-            </li>
-            <li role="presentation" *ngIf="clothesItem.Id !=0">
-                <a href="#" (click)="onItemDetailView(clothesItem)">View</a>
-            </li>
-        </ul>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <form class="item-detail-edit">
-                    <h3>{{clothesItem.Description}}</h3>
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <select id="category" name="input-category" required [(ngModel)]="clothesItem.Type" class="form-control" [disabled]="clothesItem.Id != 0">
-                            <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <input [(ngModel)]="clothesItem.Description" name="input-description" class="form-control" placeholder="Insert the description..." />
-                    </div>
-                    <div class="form-group">
-                        <label>Shop Purchased:</label>
-                        <input [(ngModel)]="clothesItem.Shop" name="input-shop" class="form-control" placeholder="Where was it purchased from?..." />
-                    </div>
-
-                    <div *ngIf="clothesItem.Id == 0" class="commands insert">
-                        <input type="button" value="Save" class="btn btn-primary" (click)="onInsert(clothesItem)" />
-                        <input type="button" value="Cancel" class="btn btn-default" (click)="onBack()" />
-                    </div>
-                    <div *ngIf="clothesItem.Id != 0" class="commands update">
-                        <input type="button" value="Update" class="btn btn-primary" (click)="onUpdate(clothesItem)" />
-                        <input type="button" value="Delete" class="btn btn-danger" (click)="onDelete(clothesItem)" />
-                        <input type="button" value="Cancel" class="btn btn-default" (click)="onItemDetailView(clothesItem)" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>`
+    templateUrl: "./app/clothes-detail-edit.component.html"
 })
 
 export class ClothesDetailEditComponent {
@@ -61,6 +15,7 @@ export class ClothesDetailEditComponent {
     categories: Array<Category>;
     disableSelect: boolean;
     dateLastWorn: string;
+    errorMessage: string;
 
     constructor(private clothesService: ClothesService,
         private router: Router,
@@ -86,6 +41,7 @@ export class ClothesDetailEditComponent {
         }
 
         this.categories = this.clothesService.getCategories();
+        this.errorMessage = "";
     }
 
     onItemDetailView(clothesItem: ClothesItem)
@@ -125,8 +81,13 @@ export class ClothesDetailEditComponent {
             console.log("Item " + this.clothesItem.Id + " has been deleted");
             this.router.navigate([""]);
         },
-            (error) => console.log(error)
+            (error) => this.displayError(error)
         );
+    }
+
+    displayError(error: any) {
+        console.log(error); 
+        this.errorMessage = "The value could not be deleted.";
     }
 
     onBack() {

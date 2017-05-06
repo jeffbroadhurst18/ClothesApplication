@@ -31,13 +31,13 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                     this.categories = new Array();
                 }
                 getCategories() {
-                    var cats = new Array();
+                    let cats = new Array();
                     cats = [{ id: 1, name: "Tops" }, { id: 2, name: "Trousers" }, { id: 3, name: "Shoes" }];
                     this.categories = cats;
                     return cats;
                 }
                 getClothesItemsByType(num) {
-                    var url = this.baseUrl + "GetType/";
+                    let url = this.baseUrl + "GetType/";
                     if (num != null) {
                         url += num;
                     }
@@ -46,7 +46,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                         .catch(this.handleError);
                 }
                 getClothesItem(id) {
-                    var url = this.baseUrl;
+                    let url = this.baseUrl;
                     if (id != null) {
                         url += id;
                     }
@@ -59,17 +59,17 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                 }
                 // calls the POST method to add a new item
                 add(clothesItem) {
-                    var url = this.baseUrl;
+                    let url = this.baseUrl;
                     return this.http.post(url, JSON.stringify(clothesItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
                 }
                 // calls the PUT method to update an existing item
                 update(clothesItem) {
-                    var url = this.baseUrl + clothesItem.Id;
+                    let url = this.baseUrl + clothesItem.Id;
                     return this.http.put(url, JSON.stringify(clothesItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
                 }
-                // Calls Delete
+                // calls celete
                 delete(id) {
-                    var url = this.baseUrl + id;
+                    let url = this.baseUrl + id;
                     return this.http.delete(url).catch(this.handleError);
                 }
                 handleError(error) {

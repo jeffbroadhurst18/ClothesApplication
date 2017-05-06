@@ -49,15 +49,14 @@ gulp.task('app', ['app_clean'], function () {
         .pipe(gulp.dest(destPaths.app));
 });
 
-gulp.task('ht', function () {
-    return gulp.src(srcPaths.ht).pipe(gulp.dest(destPaths.app));
-}
-)
-
 // Delete wwwroot/app contents
 gulp.task('app_clean', function () {
     return gulp.src(destPaths.app + "*.*", { read: false })
     .pipe(gp_clean({ force: true }));
+});
+
+gulp.task('ht', function () {
+    return gulp.src(srcPaths.ht).pipe(gulp.dest(destPaths.app));
 });
 
 // Copy all JS files from external libraries to wwwroot/js
@@ -91,7 +90,7 @@ gulp.task('less_clean', function () {
 
 // Watch specified files and define what to do upon file changes
 gulp.task('watch', function () {
-    gulp.watch([srcPaths.app, srcPaths.js], ['app', 'js']);
+    gulp.watch([srcPaths.app, srcPaths.js, srcPaths.ht], ['app', 'js','ht']);
 });
 
 // Global cleanup task

@@ -31,22 +31,22 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                 }
                 // calls the POST method to add a new Log item
                 addLog(logItem) {
-                    var url = this.baseUrl;
+                    let url = this.baseUrl;
                     return this.http.post(url, JSON.stringify(logItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
                 }
-                // Calls Delete
+                // calls delete
                 delete(id) {
-                    var url = this.baseUrl + id;
+                    let url = this.baseUrl + id;
                     return this.http.delete(url).catch(this.handleError);
                 }
                 getHistory() {
-                    var url = this.baseUrl;
+                    let url = this.baseUrl;
                     return this.http.get(url)
                         .map(response => response.json())
                         .catch(this.handleError);
                 }
                 getFilteredHistory(itemId, categoryId) {
-                    var url = this.baseUrl + "GetFiltered/" + itemId + "/" + categoryId;
+                    let url = this.baseUrl + "GetFiltered/" + itemId + "/" + categoryId;
                     return this.http.get(url)
                         .map(response => response.json())
                         .catch(this.handleError);

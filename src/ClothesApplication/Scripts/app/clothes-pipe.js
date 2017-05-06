@@ -25,13 +25,13 @@ System.register(["@angular/core", "@angular/common"], function (exports_1, conte
                 transform(input) {
                     switch (input) {
                         case 1: {
-                            return 'Tops';
+                            return "Tops";
                         }
                         case 2: {
-                            return 'Trousers';
+                            return "Trousers";
                         }
                         case 3: {
-                            return 'Shoes';
+                            return "Shoes";
                         }
                     }
                 }
@@ -44,7 +44,7 @@ System.register(["@angular/core", "@angular/common"], function (exports_1, conte
             TransformDatePipe = class TransformDatePipe {
                 transform(input) {
                     this.datePipe = new common_1.DatePipe();
-                    return this.datePipe.transform(input, 'dd/MM/yyyy');
+                    return this.datePipe.transform(input, "dd/MM/yyyy");
                 }
             };
             TransformDatePipe = __decorate([

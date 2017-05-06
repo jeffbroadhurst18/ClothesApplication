@@ -12,27 +12,26 @@ export class HistoryService {
 
     // calls the POST method to add a new Log item
     addLog(logItem: LogItem) {
-        var url = this.baseUrl;
+        let url: string = this.baseUrl;
         return this.http.post(url, JSON.stringify(logItem),
             this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
     }
 
-    // Calls Delete
+    // calls delete
     delete(id: number) {
-        var url = this.baseUrl + id;
+        let url: string = this.baseUrl + id;
         return this.http.delete(url).catch(this.handleError);
     }
 
     getHistory() {
-        var url = this.baseUrl;
+        let url: string = this.baseUrl;
         return this.http.get(url)
             .map(response => response.json())
             .catch(this.handleError);
     }
 
-    getFilteredHistory(itemId, categoryId)
-    {
-        var url = this.baseUrl + "GetFiltered/" + itemId + "/" + categoryId;
+    getFilteredHistory(itemId: Number, categoryId:Number):Observable<any> {
+        let url:string = this.baseUrl + "GetFiltered/" + itemId + "/" + categoryId;
         return this.http.get(url)
             .map(response => response.json())
             .catch(this.handleError);
@@ -43,7 +42,7 @@ export class HistoryService {
         return Observable.throw(error.json().error || "Server Error");
     }
 
-    private getRequestOptions() {
+    private getRequestOptions(): RequestOptions {
         return new RequestOptions({
             headers: new Headers({
                 "Content-Type": "application/json"

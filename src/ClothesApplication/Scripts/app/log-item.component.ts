@@ -8,63 +8,7 @@ import { HistoryService } from "./history.service";
 
 @Component({
     selector: "log-item",
-    template: `
-<div class="container-fluid">
-    <div class="row selectedItems">
-        <div class="col-md-1"></div>
-        <div class="col-md-4">
-            <div class="container-fluid">
-                <div class="row">
-                    <h3>Store Daily Outfit</h3>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="historyDate" class="historyDate">Date:</label>
-                        <input type="date" [(ngModel)]="selectedDate" name="historyDate" (click)="dateEntered()" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="container-fluid">
-                <div class="row firstRow">
-                </div>
-                <div class="row">
-                    <div class="selectedTitle">Top:</div><div class="selectedValue"><span *ngIf="selectedTop">{{selectedTop.Description}}</span></div>
-                </div>
-                <div class="row">
-                    <div class="selectedTitle">Trousers:</div><div class="selectedValue"><span *ngIf="selectedTrousers">{{selectedTrousers.Description}}</span></div>
-                </div>
-                <div class="row">
-                    <div class="selectedTitle">Shoes:</div><div class="selectedValue"><span *ngIf="selectedShoes">{{selectedShoes.Description}}</span></div>
-                </div>
-                <div class="row">
-                    <button [disabled]="!selectedAll" (click)="save()">Save</button>
-                    <button (click)="onBack()">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container-fluid">
-    <div class="row itemsTitle">
-       <div class="col-md-4">         
-        <h2 class="topsTitle">Tops</h2>
-       </div>
-       <div class="col-md-4">         
-        <h2 class="trousersTitle">Trousers</h2>
-       </div>
-       <div class="col-md-4">         
-        <h2 class="shoesTitle">Shoes</h2>
-       </div>
-    </div>
-    <div class="row">
-        <clothes-grid class="tops" (notify)="onNotifyTop($event)"></clothes-grid>        
-        <clothes-grid class="trousers" (notify)="onNotifyTrousers($event)"></clothes-grid>        
-        <clothes-grid class="shoes" (notify)="onNotifyShoes($event)"></clothes-grid>        
-    </div>
-</div>
-`
+    templateUrl: "./app/log-item.component.html"
 })
 
 export class LogItemComponent implements OnInit {

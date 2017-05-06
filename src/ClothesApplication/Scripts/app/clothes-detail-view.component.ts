@@ -9,36 +9,7 @@ import { FilteredHistoryComponent } from "./filtered-history.component";
 
 @Component({
     selector: "clothes-detail-view",
-    template: `<div *ngIf="clothesItem" class="item-container">
-                <h2>
-                    <a href="#" (click)="onBack()">&laquo;Back to Home</a>
-                </h2>
-                <div class="item-container">
-                    <ul class="nav nav-tabs">
-                        <li role="presentation">
-                            <a href="#" (click)="onItemDetailEdit(clothesItem)">Edit</a>
-                        </li>
-                        <li role="presentation" class="active">
-                            <a href="#">View</a>
-                        </li>
-                    </ul>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h3>{{clothesItem.Description}}</h3>
-                            <table>
-                                <tr><td class="clothesLabel">Category</td><td class="words">{{clothesItem.Type | transformCategory}}</td></tr>
-                                <tr><td class="clothesLabel">Description</td><td class="words">{{clothesItem.Description}}</td></tr>
-                                <tr><td class="clothesLabel">Shop</td><td class="words">{{clothesItem.Shop}}</td></tr>
-                                <tr><td class="clothesLabel">Last Worn</td><td class="words">{{clothesItem.LastWornDateString}}</td></tr>
-                                <tr><td class="clothesLabel">Number of times worn</td><td class="words">{{clothesItem.WornCount}}</td></tr>
-                            </table>
-                            <span class="filteredHistory">    
-                            <filtered-history [categoryId]="clothesItem.Type" [itemId]="clothesItem.Id"></filtered-history>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>`
+    templateUrl: "./app/clothes-detail-view.component.html"
 })
 
 export class ClothesDetailViewComponent {
@@ -74,7 +45,7 @@ export class ClothesDetailViewComponent {
         return false;
     }
 
-    processReturn(clothesItem: ClothesItem) {
+    processReturn(clothesItem) {
         this.clothesItem = clothesItem;
         var datePipe = new DatePipe();
         this.clothesItem.LastWornDateString = datePipe.transform(this.clothesItem.LastWornDate, 'dd/MM/yyyy');

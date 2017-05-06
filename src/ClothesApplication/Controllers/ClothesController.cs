@@ -87,14 +87,21 @@ namespace ClothesApplication.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var item = DbContext.ClothesItems.Where(i => i.Id == id).FirstOrDefault();
-            if (item != null)
+            try
             {
-                DbContext.ClothesItems.Remove(item);
-                DbContext.SaveChanges();
-                return new OkResult();
+                var item = DbContext.ClothesItems.Where(i => i.Id == id).FirstOrDefault();
+                if (item != null)
+                {
+                    DbContext.ClothesItems.Remove(item);
+                    DbContext.SaveChanges();
+                    return new OkResult();
+                }
+                return NotFound(new { Error = string.Format("Item Id {0} has not been found", id) });
             }
-            return NotFound(new { Error = string.Format("Item Id {0} has not been found", id) });
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = string.Format("Item Id {0} cannot be deleted {1}", id,ex) });
+            }
         }
 
         private JsonSerializerSettings DefaultJsonSettings
