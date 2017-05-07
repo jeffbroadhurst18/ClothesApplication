@@ -76,7 +76,7 @@ namespace ClothesApplication.Controllers
             {
                 item.Description = cvm.Description;
                 item.Shop = cvm.Shop;
-                item.LastModifiedDate = cvm.LastModifiedDate;
+                item.LastModifiedDate = DateTime.Now;
                 DbContext.SaveChanges();
                 return new JsonResult(TinyMapper.Map<ClothesViewModel>(item), DefaultJsonSettings);
             }

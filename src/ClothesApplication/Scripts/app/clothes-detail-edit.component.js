@@ -70,21 +70,23 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                 }
                 onUpdate(clothesItem) {
                     this.clothesService.update(clothesItem).subscribe((data) => {
+                        this.errorMessage = "";
                         this.clothesItem = data;
                         console.log("Item " + this.clothesItem.Id + " has been updated");
                         this.router.navigate([""]);
                     }, (error) => console.log(error));
                 }
                 onDelete(clothesItem) {
-                    var id = clothesItem.Id;
+                    let id = clothesItem.Id;
+                    this.errorMessage = "";
                     this.clothesService.delete(id).subscribe((data) => {
                         console.log("Item " + this.clothesItem.Id + " has been deleted");
                         this.router.navigate([""]);
-                    }, (error) => this.displayError(error));
+                    }, (error) => this.displayError(error, id));
                 }
-                displayError(error) {
-                    console.log(error);
-                    this.errorMessage = "The value could not be deleted.";
+                displayError(error, id) {
+                    console.log("Error deleting clothesItem with id = " + id.toString());
+                    this.errorMessage = "The value could not be deleted. Item may be used in a history record.";
                 }
                 onBack() {
                     this.router.navigate([""]);

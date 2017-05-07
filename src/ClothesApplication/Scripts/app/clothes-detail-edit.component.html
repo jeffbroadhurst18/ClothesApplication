@@ -13,7 +13,7 @@
         </ul>
         <div class="panel panel-default">
             <div class="panel-body">
-                <form class="item-detail-edit">
+                <form class="item-detail-edit" #clothesForm="ngForm">
                     <h3>{{clothesItem.Description}}</h3>
                     <div class="form-group">
                         <label for="category">Category</label>
@@ -23,11 +23,11 @@
                     </div>
                     <div class="form-group">
                         <label>Description:</label>
-                        <input [(ngModel)]="clothesItem.Description" name="input-description" class="form-control" placeholder="Insert the description..." />
+                        <input [(ngModel)]="clothesItem.Description" name="input-description" class="form-control" placeholder="Insert the description..." required />
                     </div>
                     <div class="form-group">
                         <label>Shop Purchased:</label>
-                        <input [(ngModel)]="clothesItem.Shop" name="input-shop" class="form-control" placeholder="Where was it purchased from?..." />
+                        <input [(ngModel)]="clothesItem.Shop" name="input-shop" class="form-control" placeholder="Where was it purchased from?..." required />
                     </div>
 
                     <div *ngIf="clothesItem.Id == 0" class="commands insert">
@@ -35,12 +35,13 @@
                         <input type="button" value="Cancel" class="btn btn-default" (click)="onBack()" />
                     </div>
                     <div *ngIf="clothesItem.Id != 0" class="commands update">
-                        <input type="button" value="Update" class="btn btn-primary" (click)="onUpdate(clothesItem)" />
+                        <input type="button" value="Update" class="btn btn-primary" [disabled]="!clothesForm.form.dirty || !clothesForm.form.valid" (click)="onUpdate(clothesItem)" />
                         <input type="button" value="Delete" class="btn btn-danger" (click)="onDelete(clothesItem)" />
                         <input type="button" value="Cancel" class="btn btn-default" (click)="onItemDetailView(clothesItem)" />
                     </div>
-                    <div *ngIf="errorMessage != ''">
-                        {{errorMessage}}
+                    <div *ngIf="errorMessage != ''" class="clothesError">
+                         <span class="glyphicon glyphicon-exclamation-sign"></span>       
+                        <span>Error: {{errorMessage}}</span>
                     </div>
                 </form>
             </div>

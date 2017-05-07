@@ -234,6 +234,10 @@ form.item-detail-edit {
             margin-left: 5px;
         }
     }
+
+    .ng-dirty {
+        border-left: 5px solid #42A948; /* green */
+    }
 }
 
 .empty-field {
@@ -369,8 +373,16 @@ clothes-grid {
     }
 }
 
-filtered-history{
-    .selected{
-        font-weight:bold;
+filtered-history {
+    .selected {
+        font-weight: bold;
     }
+}
+
+.clothesError {
+    background-color: lightpink;
+    color: red;
+    font-weight: bold;
+    border: 2px solid red;
+    padding: inherit;
 }

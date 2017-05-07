@@ -67,27 +67,29 @@ export class ClothesDetailEditComponent {
 
     onUpdate(clothesItem: ClothesItem) {
         this.clothesService.update(clothesItem).subscribe((data) => {
+            this.errorMessage = "";
             this.clothesItem = data;
-            console.log("Item " + this.clothesItem.Id + " has been updated");
-            this.router.navigate([""]);
+            console.log("Item " + this.clothesItem.Id + " has been updated.");
+            this.router.navigate(["clothesItem/view", clothesItem.Id]);
         },
             (error) => console.log(error)
         );
     }
 
     onDelete(clothesItem: ClothesItem) {
-        var id = clothesItem.Id;
+        let id: number = clothesItem.Id;
+        this.errorMessage = "";
         this.clothesService.delete(id).subscribe((data) => {
             console.log("Item " + this.clothesItem.Id + " has been deleted");
             this.router.navigate([""]);
         },
-            (error) => this.displayError(error)
+            (error) => this.displayError(error,id)
         );
     }
 
-    displayError(error: any) {
-        console.log(error); 
-        this.errorMessage = "The value could not be deleted.";
+    displayError(error: any, id :number) {
+        console.log("Error deleting clothesItem with id = " + id.toString()); 
+        this.errorMessage = "The value could not be deleted. Item may be used in a history record.";
     }
 
     onBack() {
