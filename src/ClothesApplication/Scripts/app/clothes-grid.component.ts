@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { ClothesItem } from "./clothes";
 import { LogItem } from "./log";
 import { ClothesService } from "./clothes.service";
+import { PagerService } from "./pager.service";
 import { DatePipe } from "@angular/common";
 
 @Component({
@@ -19,8 +20,13 @@ export class ClothesGridComponent implements OnInit {
     items: Array<ClothesItem>;
     selCol: Number;
     compareAsc: Boolean;
+    // pager object
+    pager: any = {};
+    // paged items
+    pagedItems: any[];
 
-    constructor(private clothesService: ClothesService, private router: Router) { }
+    constructor(private clothesService: ClothesService, private router: Router,
+        private pagerService: PagerService) { }
 
     ngOnInit() {
         var s = null;
@@ -40,7 +46,7 @@ export class ClothesGridComponent implements OnInit {
                 break;
         }
         s.subscribe(
-            clothesItem => this.items = this.processResult(clothesItem),
+            clothesItem => this.processResult(clothesItem),
             error => this.errorMessage = <any>error);
     }
 
@@ -54,7 +60,8 @@ export class ClothesGridComponent implements OnInit {
         for (var i = 0; i < clothesItems.length; i++) {
             clothesItems[i].LastWornDateString = this.datePipe.transform(clothesItems[i].LastWornDate, 'dd/MM/yyyy');
         }
-        return clothesItems;
+        this.items = clothesItems;
+        this.setPage(1);
     }
 
     onSelectCol(num: Number) {
@@ -73,11 +80,12 @@ export class ClothesGridComponent implements OnInit {
 
     sortItems(compareAsc: Boolean, num: Number) {
         if (compareAsc) {
-        this.items = this.sort(this.items);
+            this.items = this.sort(this.items);
         }
         else {
             this.items = this.sortDesc(this.items);
         }
+        this.setPage(1);
     }
 
     sort(clothesList: ClothesItem[]): ClothesItem[] {
@@ -108,51 +116,63 @@ export class ClothesGridComponent implements OnInit {
         }
     }
 
-        compareDesc(a: ClothesItem, b: ClothesItem) {
-            if (a.Description > b.Description) return 1;
-            if (a.Description < b.Description) return -1;
-            return 0;
-        }
-
-        compareDescAlt(a: ClothesItem, b: ClothesItem) {
-            if (a.Description < b.Description) return 1;
-            if (a.Description > b.Description) return -1;
-            return 0;
-        }
-
-        compareShop(a: ClothesItem, b: ClothesItem) {
-            if (a.Shop > b.Shop) return 1;
-            if (a.Shop < b.Shop) return -1;
-            return 0;
-        }
-
-        compareShopAlt(a: ClothesItem, b: ClothesItem) {
-            if (a.Shop < b.Shop) return 1;
-            if (a.Shop > b.Shop) return -1;
-            return 0;
-        }
-
-        compareLast(a: ClothesItem, b: ClothesItem) {
-            if (a.LastWornDate > b.LastWornDate) return 1;
-            if (a.LastWornDate < b.LastWornDate) return -1;
-            return 0;
-        }
-
-        compareLastAlt(a: ClothesItem, b: ClothesItem) {
-            if (a.LastWornDate < b.LastWornDate) return 1;
-            if (a.LastWornDate > b.LastWornDate) return -1;
-            return 0;
-        }
-
-        compareTimes(a: ClothesItem, b: ClothesItem) {
-            if (a.WornCount > b.WornCount) return 1;
-            if (a.WornCount < b.WornCount) return -1;
-            return 0;
-        }
-
-        compareTimesAlt(a: ClothesItem, b: ClothesItem) {
-            if (a.WornCount < b.WornCount) return 1;
-            if (a.WornCount > b.WornCount) return -1;
-            return 0;
-        }
+    compareDesc(a: ClothesItem, b: ClothesItem) {
+        if (a.Description > b.Description) return 1;
+        if (a.Description < b.Description) return -1;
+        return 0;
     }
+
+    compareDescAlt(a: ClothesItem, b: ClothesItem) {
+        if (a.Description < b.Description) return 1;
+        if (a.Description > b.Description) return -1;
+        return 0;
+    }
+
+    compareShop(a: ClothesItem, b: ClothesItem) {
+        if (a.Shop > b.Shop) return 1;
+        if (a.Shop < b.Shop) return -1;
+        return 0;
+    }
+
+    compareShopAlt(a: ClothesItem, b: ClothesItem) {
+        if (a.Shop < b.Shop) return 1;
+        if (a.Shop > b.Shop) return -1;
+        return 0;
+    }
+
+    compareLast(a: ClothesItem, b: ClothesItem) {
+        if (a.LastWornDate > b.LastWornDate) return 1;
+        if (a.LastWornDate < b.LastWornDate) return -1;
+        return 0;
+    }
+
+    compareLastAlt(a: ClothesItem, b: ClothesItem) {
+        if (a.LastWornDate < b.LastWornDate) return 1;
+        if (a.LastWornDate > b.LastWornDate) return -1;
+        return 0;
+    }
+
+    compareTimes(a: ClothesItem, b: ClothesItem) {
+        if (a.WornCount > b.WornCount) return 1;
+        if (a.WornCount < b.WornCount) return -1;
+        return 0;
+    }
+
+    compareTimesAlt(a: ClothesItem, b: ClothesItem) {
+        if (a.WornCount < b.WornCount) return 1;
+        if (a.WornCount > b.WornCount) return -1;
+        return 0;
+    }
+
+    setPage(page: number) {
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+
+        // get pager object from service
+        this.pager = this.pagerService.getPager(this.items.length, page);
+
+        // get current page of items..
+        this.pagedItems = this.items.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }
+}

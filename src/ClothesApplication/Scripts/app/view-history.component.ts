@@ -40,7 +40,6 @@ export class ViewHistoryComponent implements OnInit {
         // initialize to page 1
         this.history = logItems;
         this.setPage(1);
-        //return logItems;/
     }
 
     deleteLog(item: LogItem)
