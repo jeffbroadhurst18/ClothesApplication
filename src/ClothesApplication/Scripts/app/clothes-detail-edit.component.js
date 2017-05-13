@@ -72,8 +72,8 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                     this.clothesService.update(clothesItem).subscribe((data) => {
                         this.errorMessage = "";
                         this.clothesItem = data;
-                        console.log("Item " + this.clothesItem.Id + " has been updated");
-                        this.router.navigate([""]);
+                        console.log("Item " + this.clothesItem.Id + " has been updated.");
+                        this.router.navigate(["clothesItem/view", clothesItem.Id]);
                     }, (error) => console.log(error));
                 }
                 onDelete(clothesItem) {

@@ -18,6 +18,7 @@ import { ViewHistoryComponent } from './view-history.component';
 import { FilteredHistoryComponent } from './filtered-history.component';
 import { ClothesService } from "./clothes.service";
 import { HistoryService } from "./history.service";
+import { PagerService } from "./pager.service";
 import { TransformCategoryPipe } from "./clothes-pipe";
 import { TransformDatePipe } from "./clothes-pipe";
 
@@ -26,7 +27,7 @@ import { TransformDatePipe } from "./clothes-pipe";
         ClothesDetailEditComponent, ClothesGridComponent, HomeComponent, LogItemComponent,
         ViewHistoryComponent, FilteredHistoryComponent, TransformCategoryPipe, TransformDatePipe],
     imports: [BrowserModule, HttpModule, AppRouting,FormsModule,ReactiveFormsModule,RouterModule],
-    providers: [ClothesService,HistoryService],
+    providers: [ClothesService,HistoryService,PagerService],
     bootstrap : [ AppComponent ]
 })
 

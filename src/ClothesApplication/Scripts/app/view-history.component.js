@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "./history.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./history.service", "./pager.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "./history.service"], funct
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, history_service_1, ViewHistoryComponent;
+    var core_1, router_1, history_service_1, pager_service_1, ViewHistoryComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -21,13 +21,19 @@ System.register(["@angular/core", "@angular/router", "./history.service"], funct
             },
             function (history_service_1_1) {
                 history_service_1 = history_service_1_1;
+            },
+            function (pager_service_1_1) {
+                pager_service_1 = pager_service_1_1;
             }
         ],
         execute: function () {
             ViewHistoryComponent = class ViewHistoryComponent {
-                constructor(router, historyService) {
+                constructor(router, historyService, pagerService) {
                     this.router = router;
                     this.historyService = historyService;
+                    this.pagerService = pagerService;
+                    // pager object
+                    this.pager = {};
                 }
                 ngOnInit() {
                     this.historyService.getHistory().subscribe(result => this.history = this.processResult(result), error => this.errorMessage = error);
@@ -36,6 +42,8 @@ System.register(["@angular/core", "@angular/router", "./history.service"], funct
                     this.selectedItem = item;
                 }
                 processResult(logItems) {
+                    // initialize to page 1
+                    this.setPage(1, logItems);
                     return logItems;
                 }
                 deleteLog(item) {
@@ -44,6 +52,15 @@ System.register(["@angular/core", "@angular/router", "./history.service"], funct
                         this.history = this.history.filter(h => h != item);
                         this.router.navigate(["history"]);
                     }, (error) => console.log(error));
+                }
+                setPage(page, logItems) {
+                    if (page < 1 || page > this.pager.totalPages) {
+                        return;
+                    }
+                    // get pager object from service
+                    this.pager = this.pagerService.getPager(logItems.length, page);
+                    // get current page of items
+                    this.pagedItems = logItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
                 }
             };
             __decorate([
@@ -55,7 +72,7 @@ System.register(["@angular/core", "@angular/router", "./history.service"], funct
                     selector: "history",
                     templateUrl: "./app/view-history.component.html"
                 }),
-                __metadata("design:paramtypes", [router_1.Router, history_service_1.HistoryService])
+                __metadata("design:paramtypes", [router_1.Router, history_service_1.HistoryService, pager_service_1.PagerService])
             ], ViewHistoryComponent);
             exports_1("ViewHistoryComponent", ViewHistoryComponent);
         }

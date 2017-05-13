@@ -17,7 +17,8 @@ var srcPaths = {
         'node_modules/systemjs/dist/system.src.js',
         'node_modules/typescript/lib/typescript.js',
         'node_modules/ng2-bootstrap/bundles/ng2-bootstrap.min.js',
-        'node_modules/moment/moment.js'
+        'node_modules/moment/moment.js',
+        'node_modules/underscore/underscore.js'
     ],
     js_angular: [
         'node_modules/@angular/**'
@@ -26,8 +27,8 @@ var srcPaths = {
         'node_modules/rxjs/**'
     ],
     less: [
-        'Scripts/less/**/*.less'
-    ],
+        'Scripts/less/**/*.less']
+    ,
     ht: ['Scripts/app/**/*.html']
 };
 
@@ -90,7 +91,7 @@ gulp.task('less_clean', function () {
 
 // Watch specified files and define what to do upon file changes
 gulp.task('watch', function () {
-    gulp.watch([srcPaths.app, srcPaths.js, srcPaths.ht], ['app', 'ht', 'js']);
+    gulp.watch([srcPaths.app, srcPaths.js, srcPaths.ht], ['app_ht', 'js', 'ht']);
 });
 
 // Global cleanup task
@@ -98,3 +99,6 @@ gulp.task('cleanup', ['app_clean', 'js_clean', 'less_clean']);
 
 // Define the default task so it will launch all other tasks
 gulp.task('default', ['app','ht' ,'js', 'less','watch']);
+
+// Do both app and ht functions.
+gulp.task('app_ht', ['ht', 'app'])
