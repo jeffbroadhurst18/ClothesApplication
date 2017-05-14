@@ -22,6 +22,7 @@ export class ViewHistoryComponent implements OnInit {
     pager: any = {};
     // paged items
     pagedItems: any[];
+    pageSize: number = 10;
 
     constructor(private router: Router, private historyService: HistoryService, private pagerService: PagerService) { }
 
@@ -59,7 +60,7 @@ export class ViewHistoryComponent implements OnInit {
         }
 
         // get pager object from service
-        this.pager = this.pagerService.getPager(this.history.length, page);
+        this.pager = this.pagerService.getPager(this.history.length, page,this.pageSize);
 
         // get current page of items..
         this.pagedItems = this.history.slice(this.pager.startIndex, this.pager.endIndex + 1);

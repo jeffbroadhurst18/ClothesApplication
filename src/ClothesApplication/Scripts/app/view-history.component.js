@@ -36,15 +36,15 @@ System.register(["@angular/core", "@angular/router", "./history.service", "./pag
                     this.pager = {};
                 }
                 ngOnInit() {
-                    this.historyService.getHistory().subscribe(result => this.history = this.processResult(result), error => this.errorMessage = error);
+                    this.historyService.getHistory().subscribe(result => this.processResult(result), error => this.errorMessage = error);
                 }
                 onSelect(item) {
                     this.selectedItem = item;
                 }
                 processResult(logItems) {
                     // initialize to page 1
-                    this.setPage(1, logItems);
-                    return logItems;
+                    this.history = logItems;
+                    this.setPage(1);
                 }
                 deleteLog(item) {
                     this.historyService.delete(item.Id).subscribe((data) => {
@@ -53,14 +53,14 @@ System.register(["@angular/core", "@angular/router", "./history.service", "./pag
                         this.router.navigate(["history"]);
                     }, (error) => console.log(error));
                 }
-                setPage(page, logItems) {
+                setPage(page) {
                     if (page < 1 || page > this.pager.totalPages) {
                         return;
                     }
                     // get pager object from service
-                    this.pager = this.pagerService.getPager(logItems.length, page);
-                    // get current page of items
-                    this.pagedItems = logItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+                    this.pager = this.pagerService.getPager(this.history.length, page);
+                    // get current page of items..
+                    this.pagedItems = this.history.slice(this.pager.startIndex, this.pager.endIndex + 1);
                 }
             };
             __decorate([

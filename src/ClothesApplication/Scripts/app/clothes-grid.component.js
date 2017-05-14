@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "./clothes.service", "@angular/common"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./clothes.service", "./pager.service", "@angular/common"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, clothes_service_1, common_1, ClothesGridComponent;
+    var core_1, router_1, clothes_service_1, pager_service_1, common_1, ClothesGridComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -22,16 +22,22 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
             function (clothes_service_1_1) {
                 clothes_service_1 = clothes_service_1_1;
             },
+            function (pager_service_1_1) {
+                pager_service_1 = pager_service_1_1;
+            },
             function (common_1_1) {
                 common_1 = common_1_1;
             }
         ],
         execute: function () {
             ClothesGridComponent = class ClothesGridComponent {
-                constructor(clothesService, router) {
+                constructor(clothesService, router, pagerService) {
                     this.clothesService = clothesService;
                     this.router = router;
+                    this.pagerService = pagerService;
                     this.notify = new core_1.EventEmitter();
+                    // pager object
+                    this.pager = {};
                 }
                 ngOnInit() {
                     var s = null;
@@ -49,7 +55,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                             s = this.clothesService.getClothesItemsByType(3);
                             break;
                     }
-                    s.subscribe(clothesItem => this.items = this.processResult(clothesItem), error => this.errorMessage = error);
+                    s.subscribe(clothesItem => this.processResult(clothesItem), error => this.errorMessage = error);
                 }
                 onSelect(item) {
                     this.selectedItem = item;
@@ -59,7 +65,8 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     for (var i = 0; i < clothesItems.length; i++) {
                         clothesItems[i].LastWornDateString = this.datePipe.transform(clothesItems[i].LastWornDate, 'dd/MM/yyyy');
                     }
-                    return clothesItems;
+                    this.items = clothesItems;
+                    this.setPage(1);
                 }
                 onSelectCol(num) {
                     //same column
@@ -80,6 +87,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     else {
                         this.items = this.sortDesc(this.items);
                     }
+                    this.setPage(1);
                 }
                 sort(clothesList) {
                     switch (this.selCol) {
@@ -163,6 +171,15 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                         return -1;
                     return 0;
                 }
+                setPage(page) {
+                    if (page < 1 || page > this.pager.totalPages) {
+                        return;
+                    }
+                    // get pager object from service
+                    this.pager = this.pagerService.getPager(this.items.length, page);
+                    // get current page of items..
+                    this.pagedItems = this.items.slice(this.pager.startIndex, this.pager.endIndex + 1);
+                }
             };
             __decorate([
                 core_1.Input(),
@@ -177,7 +194,8 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     selector: "clothes-grid",
                     templateUrl: "./app/clothes-grid.component.html"
                 }),
-                __metadata("design:paramtypes", [clothes_service_1.ClothesService, router_1.Router])
+                __metadata("design:paramtypes", [clothes_service_1.ClothesService, router_1.Router,
+                    pager_service_1.PagerService])
             ], ClothesGridComponent);
             exports_1("ClothesGridComponent", ClothesGridComponent);
         }

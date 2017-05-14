@@ -2,6 +2,7 @@
 import { Router } from "@angular/router";
 import { ClothesItem } from "./clothes";
 import { ClothesService } from "./clothes.service";
+import { PagerService } from "./pager.service";
 import { Category } from "./category";
 import { DatePipe } from "@angular/common";
 
@@ -19,8 +20,13 @@ export class ClothesListComponent implements OnInit {
     categories: Array<Category>;
     selectedItem: ClothesItem;
     errorMessage: string;
+    // pager object
+    pager: any = {};
+    // paged items
+    pagedItems: any[];
 
-    constructor(private clothesService: ClothesService, private router: Router) { }
+    constructor(private clothesService: ClothesService, private router: Router,
+        private pagerService: PagerService) { }
 
     ngOnInit() {
         this.categories = this.clothesService.getCategories();
@@ -41,7 +47,7 @@ export class ClothesListComponent implements OnInit {
                 break;
         }
         s.subscribe(
-            result => this.clothes = this.processResult(result),
+            result => this.processResult(result),
             error => this.errorMessage = <any>error
         );
     }
@@ -51,13 +57,24 @@ export class ClothesListComponent implements OnInit {
         this.router.navigate(['clothesItem/view', this.selectedItem.Id]);
     }
 
-    processResult(clothesItems: Array<ClothesItem>)
-    {
+    processResult(clothesItems: Array<ClothesItem>) {
         var datePipe = new DatePipe();
-        for (var i = 0; i < clothesItems.length; i++)
-        {
+        for (var i = 0; i < clothesItems.length; i++) {
             clothesItems[i].LastWornDateString = datePipe.transform(clothesItems[i].LastWornDate, 'dd/MM/yyyy');
         }
-        return clothesItems;
+        this.clothes = clothesItems;
+        this.setPage(1);
+    }
+
+    setPage(page: number) {
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+
+        // get pager object from service
+        this.pager = this.pagerService.getPager(this.clothes.length, page);
+
+        // get current page of items..
+        this.pagedItems = this.clothes.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 }
