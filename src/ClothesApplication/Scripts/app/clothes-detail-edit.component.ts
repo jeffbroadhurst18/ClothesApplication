@@ -47,6 +47,7 @@ export class ClothesDetailEditComponent {
     onItemDetailView(clothesItem: ClothesItem)
     {
         this.router.navigate(["clothesItem/view", clothesItem.Id]);
+        return false;
     }
 
     processReturn(clothesItem: any) {

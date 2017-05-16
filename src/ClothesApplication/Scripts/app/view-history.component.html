@@ -23,11 +23,11 @@
                         [class.selected]="hist === selectedItem"
                         (click)="onSelect(hist)">
                         <td>{{hist.HistoryDate | transformDate}}</td>
-                        <td>{{hist.Top}}</td>
-                        <td>{{hist.Trousers}}</td>
-                        <td>{{hist.Shoes}}</td>
-                        <td><button (click)="deleteLog(hist)"><span class="glyphicon glyphicon-remove"></span></button></td>
-                    </tr>
+                            <td><a [routerLink]="['/clothesItem/view/',hist.TopId]">{{hist.Top}}</a></td>
+                            <td><a [routerLink]="['/clothesItem/view/',hist.TrousersId]">{{hist.Trousers}}</a></td>
+                            <td><a [routerLink]="['/clothesItem/view/',hist.ShoesId]">{{hist.Shoes}}</a></td>
+                            <td><button (click)="deleteLog(hist)"><span class="glyphicon glyphicon-remove"></span></button></td>
+</tr>
                 </tbody>
             </table>
             <!-- pager -->

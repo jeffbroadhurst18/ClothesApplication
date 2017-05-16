@@ -34,6 +34,7 @@ System.register(["@angular/core", "@angular/router", "./history.service", "./pag
                     this.pagerService = pagerService;
                     // pager object
                     this.pager = {};
+                    this.pageSize = 10;
                 }
                 ngOnInit() {
                     this.historyService.getHistory().subscribe(result => this.processResult(result), error => this.errorMessage = error);
@@ -58,7 +59,7 @@ System.register(["@angular/core", "@angular/router", "./history.service", "./pag
                         return;
                     }
                     // get pager object from service
-                    this.pager = this.pagerService.getPager(this.history.length, page);
+                    this.pager = this.pagerService.getPager(this.history.length, page, this.pageSize);
                     // get current page of items..
                     this.pagedItems = this.history.slice(this.pager.startIndex, this.pager.endIndex + 1);
                 }

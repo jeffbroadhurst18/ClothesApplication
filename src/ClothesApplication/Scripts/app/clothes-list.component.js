@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "./clothes.service", "@angular/common"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./clothes.service", "./pager.service", "@angular/common"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, clothes_service_1, common_1, ClothesListComponent;
+    var core_1, router_1, clothes_service_1, pager_service_1, common_1, ClothesListComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -22,15 +22,21 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
             function (clothes_service_1_1) {
                 clothes_service_1 = clothes_service_1_1;
             },
+            function (pager_service_1_1) {
+                pager_service_1 = pager_service_1_1;
+            },
             function (common_1_1) {
                 common_1 = common_1_1;
             }
         ],
         execute: function () {
             ClothesListComponent = class ClothesListComponent {
-                constructor(clothesService, router) {
+                constructor(clothesService, router, pagerService) {
                     this.clothesService = clothesService;
                     this.router = router;
+                    this.pagerService = pagerService;
+                    // pager object
+                    this.pager = {};
                 }
                 ngOnInit() {
                     this.categories = this.clothesService.getCategories();
@@ -50,7 +56,7 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                             s = this.clothesService.getClothesItemsByType(3);
                             break;
                     }
-                    s.subscribe(result => this.clothes = this.processResult(result), error => this.errorMessage = error);
+                    s.subscribe(result => this.processResult(result), error => this.errorMessage = error);
                 }
                 onSelect(item) {
                     this.selectedItem = item;
@@ -61,7 +67,17 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     for (var i = 0; i < clothesItems.length; i++) {
                         clothesItems[i].LastWornDateString = datePipe.transform(clothesItems[i].LastWornDate, 'dd/MM/yyyy');
                     }
-                    return clothesItems;
+                    this.clothes = clothesItems;
+                    this.setPage(1);
+                }
+                setPage(page) {
+                    if (page < 1 || page > this.pager.totalPages) {
+                        return;
+                    }
+                    // get pager object from service
+                    this.pager = this.pagerService.getPager(this.clothes.length, page);
+                    // get current page of items..
+                    this.pagedItems = this.clothes.slice(this.pager.startIndex, this.pager.endIndex + 1);
                 }
             };
             __decorate([
@@ -73,7 +89,8 @@ System.register(["@angular/core", "@angular/router", "./clothes.service", "@angu
                     selector: "clothes-list",
                     templateUrl: "./app/clothes-list.component.html"
                 }),
-                __metadata("design:paramtypes", [clothes_service_1.ClothesService, router_1.Router])
+                __metadata("design:paramtypes", [clothes_service_1.ClothesService, router_1.Router,
+                    pager_service_1.PagerService])
             ], ClothesListComponent);
             exports_1("ClothesListComponent", ClothesListComponent);
         }
