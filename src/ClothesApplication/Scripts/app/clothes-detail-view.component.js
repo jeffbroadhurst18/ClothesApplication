@@ -55,6 +55,10 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                     this.clothesItem = clothesItem;
                     var datePipe = new common_1.DatePipe();
                     this.clothesItem.LastWornDateString = datePipe.transform(this.clothesItem.LastWornDate, 'dd/MM/yyyy');
+                    this.clothesService.getFileExists(this.clothesItem.Id).subscribe((data) => {
+                        this.fileFound = data;
+                        this.image0 = this.fileFound.ItExists ? '/images/' + this.clothesItem.Id + '.jpg' : '/images/noFile.jpg';
+                    }, (error) => console.log(error));
                 }
                 onInsert(clothesItem) {
                     this.clothesService.add(clothesItem).subscribe((data) => {

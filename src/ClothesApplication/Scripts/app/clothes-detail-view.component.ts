@@ -2,6 +2,7 @@
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { DatePipe } from "@angular/common";
 import { ClothesItem } from "./clothes";
+import { FileExists } from "./clothes";
 import { ClothesService } from "./clothes.service";
 import { Category } from "./category";
 import { TransformCategoryPipe } from "./clothes-pipe";
@@ -17,6 +18,8 @@ export class ClothesDetailViewComponent {
     categories: Array<Category>;
     disableSelect: boolean;
     dateLastWorn: string;
+    image0: string;
+    fileFound: FileExists;
 
     constructor(private clothesService: ClothesService,
         private router: Router,
@@ -49,6 +52,12 @@ export class ClothesDetailViewComponent {
         this.clothesItem = clothesItem;
         var datePipe = new DatePipe();
         this.clothesItem.LastWornDateString = datePipe.transform(this.clothesItem.LastWornDate, 'dd/MM/yyyy');
+        this.clothesService.getFileExists(this.clothesItem.Id).subscribe((data) => {
+            this.fileFound = data;
+            this.image0 = this.fileFound.ItExists ? '/images/' + this.clothesItem.Id + '.jpg' : '/images/noFile.jpg';
+        }, (error) => console.log(error)
+        );
+
     }
 
     onInsert(clothesItem: ClothesItem) {

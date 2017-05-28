@@ -40,6 +40,12 @@ export class ClothesService {
         return this.categories[id - 1].name;
     }
 
+    getFileExists(id: number) {
+        let url: string = this.baseUrl + "/getFile/" + id;
+        return this.http.get(url)
+            .map(response => response.json()).catch(this.handleError)
+    }
+
     // calls the POST method to add a new item
     add(clothesItem: ClothesItem) {
         let url : string = this.baseUrl;

@@ -1,6 +1,6 @@
 ﻿export class ClothesItem {
     constructor(
-        public Id : number,
+        public Id: number,
         public Type: number,
         public Description: string,
         public Shop: string,
@@ -10,4 +10,9 @@
         public CreatedDate: Date,
         public LastModifiedDate: Date
     ) { }
+}
+
+export class FileExists {
+    constructor(
+        public ItExists: boolean) { }
 }

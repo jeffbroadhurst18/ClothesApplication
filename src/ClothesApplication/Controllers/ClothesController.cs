@@ -51,6 +51,17 @@ namespace ClothesApplication.Controllers
             return new JsonResult(ToClothesItemModelViewList(items), DefaultJsonSettings);
         }
 
+        [HttpGet("GetFile/{id}")]
+        public IActionResult GetFile(int id)
+        {
+            var f = "wwwroot\\images\\" + id + ".jpg";
+            if (System.IO.File.Exists(f))
+            {
+                return new JsonResult(new FileExists { ItExists = true }, DefaultJsonSettings);
+            }
+            return new JsonResult(new FileExists { ItExists = false }, DefaultJsonSettings);
+        }
+
         // POST api/values
         [HttpPost()]
         public IActionResult Add([FromBody]ClothesViewModel cvm)

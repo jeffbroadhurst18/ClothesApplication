@@ -14,16 +14,25 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h3>{{clothesItem.Description}}</h3>
-                <table>
-                    <tr><td class="clothesLabel">Category</td><td class="words">{{clothesItem.Type | transformCategory}}</td></tr>
-                    <tr><td class="clothesLabel">Description</td><td class="words">{{clothesItem.Description}}</td></tr>
-                    <tr><td class="clothesLabel">Shop</td><td class="words">{{clothesItem.Shop}}</td></tr>
-                    <tr><td class="clothesLabel">Last Worn</td><td class="words">{{clothesItem.LastWornDateString}}</td></tr>
-                    <tr><td class="clothesLabel">Number of times worn</td><td class="words">{{clothesItem.WornCount}}</td></tr>
-                </table>
-                <span class="filteredHistory">
-                    <filtered-history [categoryId]="clothesItem.Type" [itemId]="clothesItem.Id"></filtered-history>
-                </span>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img [src]="image0" title="{{clothesItem.Description}}" />
+                        </div>
+                        <div class="col-md-9">
+                            <table>
+                                <tr><td class="clothesLabel">Category</td><td class="words">{{clothesItem.Type | transformCategory}}</td></tr>
+                                <tr><td class="clothesLabel">Description</td><td class="words">{{clothesItem.Description}}</td></tr>
+                                <tr><td class="clothesLabel">Shop</td><td class="words">{{clothesItem.Shop}}</td></tr>
+                                <tr><td class="clothesLabel">Last Worn</td><td class="words">{{clothesItem.LastWornDateString}}</td></tr>
+                                <tr><td class="clothesLabel">Number of times worn</td><td class="words">{{clothesItem.WornCount}}</td></tr>
+                            </table>
+                            <span class="filteredHistory">
+                                <filtered-history [categoryId]="clothesItem.Type" [itemId]="clothesItem.Id"></filtered-history>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

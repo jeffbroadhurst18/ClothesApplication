@@ -1,7 +1,7 @@
 System.register([], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var ClothesItem;
+    var ClothesItem, FileExists;
     return {
         setters: [],
         execute: function () {
@@ -19,6 +19,12 @@ System.register([], function (exports_1, context_1) {
                 }
             };
             exports_1("ClothesItem", ClothesItem);
+            FileExists = class FileExists {
+                constructor(ItExists) {
+                    this.ItExists = ItExists;
+                }
+            };
+            exports_1("FileExists", FileExists);
         }
     };
 });

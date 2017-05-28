@@ -55,6 +55,7 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                 }
                 onItemDetailView(clothesItem) {
                     this.router.navigate(["clothesItem/view", clothesItem.Id]);
+                    return false;
                 }
                 processReturn(clothesItem) {
                     this.clothesItem = clothesItem;
