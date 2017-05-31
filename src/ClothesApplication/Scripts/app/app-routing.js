@@ -1,7 +1,7 @@
-System.register(["@angular/router", "./clothes-detail-view.component", "./clothes-detail-edit.component", "./log-item.component", "./home.component", "./view-history.component"], function (exports_1, context_1) {
+System.register(["@angular/router", "./clothes-detail-view.component", "./clothes-detail-edit.component", "./log-item.component", "./home.component", "./view-history.component", "./upload.component"], function (exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var router_1, clothes_detail_view_component_1, clothes_detail_edit_component_1, log_item_component_1, home_component_1, view_history_component_1, appRoutes, AppRoutingProviders, AppRouting;
+    var router_1, clothes_detail_view_component_1, clothes_detail_edit_component_1, log_item_component_1, home_component_1, view_history_component_1, upload_component_1, appRoutes, AppRoutingProviders, AppRouting;
     return {
         setters: [
             function (router_1_1) {
@@ -21,6 +21,9 @@ System.register(["@angular/router", "./clothes-detail-view.component", "./clothe
             },
             function (view_history_component_1_1) {
                 view_history_component_1 = view_history_component_1_1;
+            },
+            function (upload_component_1_1) {
+                upload_component_1 = upload_component_1_1;
             }
         ],
         execute: function () {
@@ -48,6 +51,10 @@ System.register(["@angular/router", "./clothes-detail-view.component", "./clothe
                 {
                     path: "history",
                     component: view_history_component_1.ViewHistoryComponent
+                },
+                {
+                    path: "upload",
+                    component: upload_component_1.UploadComponent
                 },
             ];
             exports_1("AppRoutingProviders", AppRoutingProviders = []);

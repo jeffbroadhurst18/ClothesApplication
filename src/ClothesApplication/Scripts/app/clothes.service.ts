@@ -60,10 +60,27 @@ export class ClothesService {
             this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
     }
 
-    // calls celete
+    // calls delete
     delete(id: number) {
         let url : string = this.baseUrl + id;
         return this.http.delete(url).catch(this.handleError);
+    }
+
+    savePicture(fileList: FileList, itemId: number, apiUrl: string)
+    {
+        if (fileList.length > 0) {
+            let file: File = fileList[0];
+            let formData: FormData = new FormData();
+            formData.append('files', file, file.name);
+            let headers = new Headers();
+            headers.append('enctype', 'multipart/form-data');
+            headers.append('Accept', 'application/json');
+            let options = new RequestOptions({ headers: headers });
+            return this.http.post(apiUrl, formData, options)
+                //this.http.post(this.apiUrl, formData)
+                .map(res => res)
+                .catch(error => Observable.throw(error));
+        }
     }
 
     private handleError(error: Response) {

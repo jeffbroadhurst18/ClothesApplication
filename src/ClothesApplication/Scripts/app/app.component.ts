@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </label>
             <a class="navbar-brand" href="javascript:void(0)">
                 <img alt="logo" src="/img/logo.svg" />

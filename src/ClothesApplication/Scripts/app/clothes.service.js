@@ -60,8 +60,7 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                 getFileExists(id) {
                     let url = this.baseUrl + "/getFile/" + id;
                     return this.http.get(url)
-                        .map(response => response)
-                        .catch(this.handleError);
+                        .map(response => response.json()).catch(this.handleError);
                 }
                 // calls the POST method to add a new item
                 add(clothesItem) {

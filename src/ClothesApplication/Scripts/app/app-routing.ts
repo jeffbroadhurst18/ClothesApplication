@@ -7,6 +7,7 @@ import { ClothesDetailEditComponent } from './clothes-detail-edit.component';
 import { LogItemComponent } from './log-item.component';
 import { HomeComponent } from './home.component';
 import { ViewHistoryComponent } from './view-history.component';
+import { UploadComponent } from './upload.component';
 
 const appRoutes: Routes = [
     {
@@ -32,6 +33,10 @@ const appRoutes: Routes = [
     {
         path: "history",
         component: ViewHistoryComponent
+    },
+    {
+        path: "upload",
+        component: UploadComponent
     },
 ];
 

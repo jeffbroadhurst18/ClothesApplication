@@ -8,6 +8,10 @@ using ClothesApplication.Data;
 using ClothesApplication.Data.ClothesItems;
 using Nelibur.ObjectMapper;
 using ClothesApplication.Data.History;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.Extensions.Options;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,10 +21,13 @@ namespace ClothesApplication.Controllers
     public class ClothesController : Controller
     {
         private ApplicationDbContext DbContext;
-        
-        public ClothesController(ApplicationDbContext context)
+        private string wwwPath;
+        private readonly IOptions<AppSettings> config;
+
+        public ClothesController(ApplicationDbContext context, IOptions<AppSettings> config)
         {
             DbContext = context;
+            this.config = config;
         }
 
         // GET: api/values
@@ -111,7 +118,29 @@ namespace ClothesApplication.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new { Error = string.Format("Item Id {0} cannot be deleted {1}", id,ex) });
+                return NotFound(new { Error = string.Format("Item Id {0} cannot be deleted {1}", id, ex) });
+            }
+        }
+
+        [HttpPost("UploadFiles/{id}")]
+        public IActionResult Post([FromForm] IFormFileCollection files, int id)
+        {
+            try
+            {
+                var filePath = Path.GetTempFileName();
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    // await file.CopyToAsync(stream);
+                    files[0].CopyTo(stream);
+                }
+                var newPath = this.config.Value.ImagePath + "\\" + id + ".jpg";
+                System.IO.File.Copy(filePath, newPath,true);
+
+                return this.Ok();
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest();
             }
         }
 
@@ -135,7 +164,5 @@ namespace ClothesApplication.Controllers
             };
             return lst;
         }
-
-        
     }
 }

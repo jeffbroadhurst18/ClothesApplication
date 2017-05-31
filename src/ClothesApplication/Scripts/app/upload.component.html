@@ -1,0 +1,6 @@
+﻿<input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg">
+<div>
+    <select name="input-category" required [(ngModel)]="selectedItem">
+        <option *ngFor="let c of clothes" [ngValue]="c.Id">{{c.Description}}</option>
+    </select>
+</div>

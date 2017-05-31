@@ -29,7 +29,11 @@
                         <label>Shop Purchased:</label>
                         <input [(ngModel)]="clothesItem.Shop" name="input-shop" class="form-control" placeholder="Where was it purchased from?..." required />
                     </div>
-
+                    <div *ngIf="clothesItem.Id != 0" class="form-group">
+                        <label>Add Picture</label>
+                        <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg">
+                        <img [src]="image0" title="{{clothesItem.Description}}" name="input-image0"/>
+                    </div>
                     <div *ngIf="clothesItem.Id == 0" class="commands insert">
                         <input type="button" value="Save" class="btn btn-primary" (click)="onInsert(clothesItem)" />
                         <input type="button" value="Cancel" class="btn btn-default" (click)="onBack()" />
@@ -46,5 +50,6 @@
                 </form>
             </div>
         </div>
+       
     </div>
 </div>
