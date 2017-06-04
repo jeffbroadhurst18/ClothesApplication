@@ -3,10 +3,11 @@ import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { ClothesItem } from "./clothes";
 import { Category } from "./category";
+import { AuthHttp } from './auth.http';
 
 @Injectable()
 export class ClothesService {
-    constructor(private http: Http) {
+    constructor(private http: AuthHttp) {
 
     }
 

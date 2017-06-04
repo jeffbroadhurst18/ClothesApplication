@@ -6,6 +6,7 @@ import { Observable } from "rxjs/Observable";
 import { ClothesItem, FileExists } from "./clothes";
 import { ClothesService } from "./clothes.service";
 import { Category } from "./category";
+import { AuthService } from "./auth.service";
 
 @Component({
     selector: "clothes-detail-edit",
@@ -27,7 +28,13 @@ export class ClothesDetailEditComponent {
     constructor(private clothesService: ClothesService,
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private http: Http) {
+        private http: Http,
+        private authService: AuthService) {
+
+        if (this.authService.isLoggedIn()) {
+            this.router.navigate([""]);
+        }
+
         this.baseUrl = 'api/clothes/UploadFiles';
         this.swapper = true;
     }

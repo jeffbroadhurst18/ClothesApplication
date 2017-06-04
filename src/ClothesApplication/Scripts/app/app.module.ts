@@ -3,6 +3,8 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule } from "@angular/http";
 import { AppRouting } from './app-routing';
+import { AuthService } from './auth.service';
+import { AuthHttp } from './auth.http';
 import "rxjs/Rx";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -28,7 +30,7 @@ import { TransformDatePipe } from "./clothes-pipe";
         ClothesDetailEditComponent, ClothesGridComponent, HomeComponent, LogItemComponent,
         ViewHistoryComponent, FilteredHistoryComponent, UploadComponent, TransformCategoryPipe, TransformDatePipe],
     imports: [BrowserModule, HttpModule, AppRouting,FormsModule,ReactiveFormsModule,RouterModule],
-    providers: [ClothesService,HistoryService,PagerService],
+    providers: [ClothesService,HistoryService,PagerService,AuthService,AuthHttp],
     bootstrap : [ AppComponent ]
 })
 

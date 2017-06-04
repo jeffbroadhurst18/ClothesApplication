@@ -5,6 +5,7 @@ import { LogItem } from "./log";
 import { ClothesItem } from "./clothes";
 import { ClothesService } from "./clothes.service";
 import { HistoryService } from "./history.service";
+import { AuthService } from "./auth.service";
 
 @Component({
     selector: "log-item",
@@ -25,8 +26,13 @@ export class LogItemComponent implements OnInit {
     constructor(private clothesService: ClothesService,
         private historyService: HistoryService,
         private router: Router,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private authService: AuthService
     ) {
+        if (this.authService.isLoggedIn()) {
+            this.router.navigate([""]);
+        }
+
         this.datePipe = new DatePipe();
         this.logItem = new LogItem();
         this.logItem.Id = 0;

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using ClothesApplication.Data.History;
 using ClothesApplication.Data.ClothesItems;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ClothesApplication.Data.Users;
 
 namespace ClothesApplication.Data
 {
-    public class ApplicationDbContext :DbContext
+    public class ApplicationDbContext :IdentityDbContext<ApplicationUser>
     {
 
         #region Constructor

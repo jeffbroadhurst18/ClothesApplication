@@ -2,10 +2,11 @@
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { LogItem } from "./log";
 import { Observable } from "rxjs/Observable";
+import { AuthHttp } from './auth.http';
 
 @Injectable()
 export class HistoryService {
-    constructor(private http: Http) {
+    constructor(private http: AuthHttp) {
     }
 
     private baseUrl = "api/history/";

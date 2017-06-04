@@ -72,10 +72,24 @@ System.register(["@angular/core", "@angular/http", "rxjs/Observable"], function 
                     let url = this.baseUrl + clothesItem.Id;
                     return this.http.put(url, JSON.stringify(clothesItem), this.getRequestOptions()).map(response => response.json()).catch(this.handleError);
                 }
-                // calls celete
+                // calls delete
                 delete(id) {
                     let url = this.baseUrl + id;
                     return this.http.delete(url).catch(this.handleError);
+                }
+                savePicture(fileList, itemId, apiUrl) {
+                    if (fileList.length > 0) {
+                        let file = fileList[0];
+                        let formData = new FormData();
+                        formData.append('files', file, file.name);
+                        let headers = new http_1.Headers();
+                        headers.append('enctype', 'multipart/form-data');
+                        headers.append('Accept', 'application/json');
+                        let options = new http_1.RequestOptions({ headers: headers });
+                        return this.http.post(apiUrl, formData, options)
+                            .map(res => res)
+                            .catch(error => Observable_1.Observable.throw(error));
+                    }
                 }
                 handleError(error) {
                     console.error(error);

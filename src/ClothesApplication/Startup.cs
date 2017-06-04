@@ -13,6 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using Nelibur.ObjectMapper;
 using ClothesApplication.Data.ClothesItems;
 using ClothesApplication.ViewModels;
+using ClothesApplication.Data.Users;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ClothesApplication.Classes;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ClothesApplication
 {
@@ -44,11 +48,29 @@ namespace ClothesApplication
             services.AddApplicationInsightsTelemetry(Configuration);
                         services.AddMvc();
             services.AddEntityFramework();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Cookies.ApplicationCookie.AutomaticChallenge = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            services.AddCors(options => { options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()); });
+            //Set up config
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            // Add ApplicationDbContext's DbSeeder
+            services.AddSingleton<DbSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DbSeeder dbSeeder)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -71,8 +93,39 @@ namespace ClothesApplication
                 }
             });
 
+            // Add a custom Jwt Provider to generate Tokens
+            app.UseJwtProvider();
+
+            // Add the Jwt Bearer Header Authentication to validate Tokens
+            app.UseJwtBearerAuthentication(new JwtBearerOptions()
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                RequireHttpsMetadata = false,
+                TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = JwtProvider.SecurityKey,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = JwtProvider.Issuer,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                }
+            });
+
+
             app.UseMvc();
             TinyMapper.Bind<ClothesItem, ClothesViewModel>();
+
+            app.UseCors("CorsPolicy");
+
+            try
+            {
+               // dbSeeder.CreateUsersAsync().Wait();
+            }
+            catch (AggregateException e)
+            {
+                throw new Exception(e.ToString());
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "@angular/common", "./clothes", "./clothes.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "@angular/common", "@angular/http", "./clothes", "./clothes.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, common_1, clothes_1, clothes_service_1, ClothesDetailEditComponent;
+    var core_1, router_1, common_1, http_1, clothes_1, clothes_service_1, ClothesDetailEditComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -22,6 +22,9 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
             function (common_1_1) {
                 common_1 = common_1_1;
             },
+            function (http_1_1) {
+                http_1 = http_1_1;
+            },
             function (clothes_1_1) {
                 clothes_1 = clothes_1_1;
             },
@@ -31,10 +34,13 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
         ],
         execute: function () {
             ClothesDetailEditComponent = class ClothesDetailEditComponent {
-                constructor(clothesService, router, activatedRoute) {
+                constructor(clothesService, router, activatedRoute, http) {
                     this.clothesService = clothesService;
                     this.router = router;
                     this.activatedRoute = activatedRoute;
+                    this.http = http;
+                    this.baseUrl = 'api/clothes/UploadFiles';
+                    this.swapper = true;
                 }
                 ngOnInit() {
                     this.disableSelect = true;
@@ -61,12 +67,19 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                     this.clothesItem = clothesItem;
                     var datePipe = new common_1.DatePipe();
                     this.clothesItem.LastWornDateString = datePipe.transform(this.clothesItem.LastWornDate, 'dd/MM/yyyy');
+                    this.checkIfFileExists(this.clothesItem.Id);
+                }
+                checkIfFileExists(id) {
+                    this.clothesService.getFileExists(id).subscribe((data) => {
+                        this.fileFound = data;
+                        this.image0 = this.fileFound.ItExists ? '/images/' + id + '.jpg' + '?' + new Date().getTime() : '/images/noFile.jpg' + '?' + new Date().getTime();
+                    }, (error) => console.log(error));
                 }
                 onInsert(clothesItem) {
                     this.clothesService.add(clothesItem).subscribe((data) => {
                         this.clothesItem = data;
                         console.log("Item " + this.clothesItem.Id + " has been added");
-                        this.router.navigate([""]);
+                        //  this.router.navigate([""]);
                     }, (error) => console.log(error));
                 }
                 onUpdate(clothesItem) {
@@ -92,6 +105,16 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                 onBack() {
                     this.router.navigate([""]);
                 }
+                fileChange(event) {
+                    let fileList = event.target.files;
+                    let itemId = this.clothesItem != null ? this.clothesItem.Id : 0;
+                    this.apiUrl = this.baseUrl + '/' + itemId;
+                    this.clothesService.savePicture(fileList, itemId, this.apiUrl).subscribe(data => this.processFileChange(), error => console.log(error));
+                }
+                processFileChange() {
+                    console.log('Save Picture - success');
+                    this.checkIfFileExists(this.clothesItem.Id);
+                }
             };
             ClothesDetailEditComponent = __decorate([
                 core_1.Component({
@@ -100,7 +123,8 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                 }),
                 __metadata("design:paramtypes", [clothes_service_1.ClothesService,
                     router_1.Router,
-                    router_1.ActivatedRoute])
+                    router_1.ActivatedRoute,
+                    http_1.Http])
             ], ClothesDetailEditComponent);
             exports_1("ClothesDetailEditComponent", ClothesDetailEditComponent);
         }

@@ -62,9 +62,6 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
                 <li [class.active]="isActive(['history'])">
                     <a class="history" [routerLink]="['history']">View History</a>
                 </li>
-                <li [class.active]="isActive(['upload'])">
-                    <a class="history" [routerLink]="['upload']">Upload</a>
-                </li>
             </ul>
         </div>
     </div>

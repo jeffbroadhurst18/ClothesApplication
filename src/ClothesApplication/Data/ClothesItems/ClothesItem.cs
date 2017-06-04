@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClothesApplication.Data.Users;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,6 +29,22 @@ namespace ClothesApplication.Data.ClothesItems
         public DateTime CreatedDate { get; set; }
         [Required]
         public DateTime LastModifiedDate { get; set; }
+
+        #region Related Properties
+        /// <summary>
+        /// Current Item's Author: this property will be loaded on first use using EF's Lazy-Loading feature.
+        /// </summary>
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser Author { get; set; }
+        #endregion
+    }
+
+    public class FileExists
+    {
+        public FileExists()
+        { }
+
+        public bool ItExists { get; set; }
     }
 }
 

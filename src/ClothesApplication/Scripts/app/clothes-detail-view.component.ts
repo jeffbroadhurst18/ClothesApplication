@@ -7,6 +7,7 @@ import { ClothesService } from "./clothes.service";
 import { Category } from "./category";
 import { TransformCategoryPipe } from "./clothes-pipe";
 import { FilteredHistoryComponent } from "./filtered-history.component";
+import { AuthService } from "./auth.service";
 
 @Component({
     selector: "clothes-detail-view",
@@ -23,7 +24,8 @@ export class ClothesDetailViewComponent {
 
     constructor(private clothesService: ClothesService,
         private router: Router,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private authService: AuthService
     ) { }
 
     ngOnInit() {
