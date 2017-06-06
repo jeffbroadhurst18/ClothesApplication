@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "@angular/common", "@angular/http", "./clothes", "./clothes.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "@angular/common", "@angular/http", "./clothes", "./clothes.service", "./auth.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "@angula
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, common_1, http_1, clothes_1, clothes_service_1, ClothesDetailEditComponent;
+    var core_1, router_1, common_1, http_1, clothes_1, clothes_service_1, auth_service_1, ClothesDetailEditComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -30,15 +30,22 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "@angula
             },
             function (clothes_service_1_1) {
                 clothes_service_1 = clothes_service_1_1;
+            },
+            function (auth_service_1_1) {
+                auth_service_1 = auth_service_1_1;
             }
         ],
         execute: function () {
             ClothesDetailEditComponent = class ClothesDetailEditComponent {
-                constructor(clothesService, router, activatedRoute, http) {
+                constructor(clothesService, router, activatedRoute, http, authService) {
                     this.clothesService = clothesService;
                     this.router = router;
                     this.activatedRoute = activatedRoute;
                     this.http = http;
+                    this.authService = authService;
+                    if (this.authService.isLoggedIn()) {
+                        this.router.navigate([""]);
+                    }
                     this.baseUrl = 'api/clothes/UploadFiles';
                     this.swapper = true;
                 }
@@ -124,7 +131,8 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "@angula
                 __metadata("design:paramtypes", [clothes_service_1.ClothesService,
                     router_1.Router,
                     router_1.ActivatedRoute,
-                    http_1.Http])
+                    http_1.Http,
+                    auth_service_1.AuthService])
             ], ClothesDetailEditComponent);
             exports_1("ClothesDetailEditComponent", ClothesDetailEditComponent);
         }

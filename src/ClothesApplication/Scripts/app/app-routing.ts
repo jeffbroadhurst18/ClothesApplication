@@ -8,6 +8,7 @@ import { LogItemComponent } from './log-item.component';
 import { HomeComponent } from './home.component';
 import { ViewHistoryComponent } from './view-history.component';
 import { UploadComponent } from './upload.component';
+import { LoginComponent } from './login.component';
 
 const appRoutes: Routes = [
     {
@@ -37,6 +38,10 @@ const appRoutes: Routes = [
     {
         path: "upload",
         component: UploadComponent
+    },
+    {
+        path: "login",
+        component: LoginComponent
     },
 ];
 

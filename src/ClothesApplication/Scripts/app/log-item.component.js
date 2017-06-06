@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "@angular/common", "./log", "./clothes.service", "./history.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "@angular/common", "./log", "./clothes.service", "./history.service", "./auth.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./log",
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, common_1, log_1, clothes_service_1, history_service_1, LogItemComponent;
+    var core_1, router_1, common_1, log_1, clothes_service_1, history_service_1, auth_service_1, LogItemComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -30,15 +30,22 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./log",
             },
             function (history_service_1_1) {
                 history_service_1 = history_service_1_1;
+            },
+            function (auth_service_1_1) {
+                auth_service_1 = auth_service_1_1;
             }
         ],
         execute: function () {
             LogItemComponent = class LogItemComponent {
-                constructor(clothesService, historyService, router, activatedRoute) {
+                constructor(clothesService, historyService, router, activatedRoute, authService) {
                     this.clothesService = clothesService;
                     this.historyService = historyService;
                     this.router = router;
                     this.activatedRoute = activatedRoute;
+                    this.authService = authService;
+                    if (this.authService.isLoggedIn()) {
+                        this.router.navigate([""]);
+                    }
                     this.datePipe = new common_1.DatePipe();
                     this.logItem = new log_1.LogItem();
                     this.logItem.Id = 0;
@@ -119,7 +126,8 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./log",
                 __metadata("design:paramtypes", [clothes_service_1.ClothesService,
                     history_service_1.HistoryService,
                     router_1.Router,
-                    router_1.ActivatedRoute])
+                    router_1.ActivatedRoute,
+                    auth_service_1.AuthService])
             ], LogItemComponent);
             exports_1("LogItemComponent", LogItemComponent);
         }

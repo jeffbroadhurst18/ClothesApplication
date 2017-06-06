@@ -31,7 +31,7 @@ export class ClothesDetailEditComponent {
         private http: Http,
         private authService: AuthService) {
 
-        if (this.authService.isLoggedIn()) {
+        if (!this.authService.isLoggedIn()) {
             this.router.navigate([""]);
         }
 

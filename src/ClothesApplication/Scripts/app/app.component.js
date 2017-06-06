@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "./auth.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, AppComponent;
+    var core_1, router_1, auth_service_1, AppComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -18,16 +18,26 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (auth_service_1_1) {
+                auth_service_1 = auth_service_1_1;
             }
         ],
         execute: function () {
             AppComponent = class AppComponent {
-                constructor(router) {
+                constructor(router, authService) {
                     this.router = router;
+                    this.authService = authService;
                     this.title = 'Rebecca Clothes Program';
                 }
                 isActive(data) {
                     return this.router.isActive(this.router.createUrlTree(data), true);
+                }
+                logout() {
+                    if (this.authService.logout()) {
+                        this.router.navigate([""]);
+                    }
+                    return false;
                 }
             };
             AppComponent = __decorate([
@@ -53,14 +63,20 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
                 <li [class.active]="isActive([''])">
                     <a class="home" [routerLink]="['']">Home</a>
                 </li>
-                <li [class.active]="isActive(['clothesItem/edit',0])">
+                <li [class.active]="isActive(['clothesItem/edit',0])" *ngIf="authService.isLoggedIn()">
                     <a class="add" [routerLink]="['clothesItem/edit', 0]">Add new item</a>
                 </li>
-                <li [class.active]="isActive(['logItem'])">
+                <li [class.active]="isActive(['logItem'])" *ngIf="authService.isLoggedIn()">
                     <a class="log" [routerLink]="['logItem']">Add Log</a>
                 </li>
                 <li [class.active]="isActive(['history'])">
                     <a class="history" [routerLink]="['history']">View History</a>
+                </li>
+                <li *ngIf="!authService.isLoggedIn()" [class.active]="isActive(['login'])">
+                    <a class="login" [routerLink]="['login']">Login</a>
+                </li>
+                <li *ngIf="authService.isLoggedIn()">
+                    <a class="logout" href="javascript:void(0)" (click)="logout()">Logout</a>
                 </li>
             </ul>
         </div>
@@ -71,7 +87,7 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
     <router-outlet></router-outlet>
 </div>`
                 }),
-                __metadata("design:paramtypes", [router_1.Router])
+                __metadata("design:paramtypes", [router_1.Router, auth_service_1.AuthService])
             ], AppComponent);
             exports_1("AppComponent", AppComponent);
         }

@@ -29,7 +29,7 @@ export class LogItemComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private authService: AuthService
     ) {
-        if (this.authService.isLoggedIn()) {
+        if (!this.authService.isLoggedIn()) {
             this.router.navigate([""]);
         }
 

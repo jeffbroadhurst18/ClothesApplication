@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/router", "@angular/common", "./clothes.service"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/router", "@angular/common", "./clothes.service", "./auth.service"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, common_1, clothes_service_1, ClothesDetailViewComponent;
+    var core_1, router_1, common_1, clothes_service_1, auth_service_1, ClothesDetailViewComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -24,14 +24,18 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
             },
             function (clothes_service_1_1) {
                 clothes_service_1 = clothes_service_1_1;
+            },
+            function (auth_service_1_1) {
+                auth_service_1 = auth_service_1_1;
             }
         ],
         execute: function () {
             ClothesDetailViewComponent = class ClothesDetailViewComponent {
-                constructor(clothesService, router, activatedRoute) {
+                constructor(clothesService, router, activatedRoute, authService) {
                     this.clothesService = clothesService;
                     this.router = router;
                     this.activatedRoute = activatedRoute;
+                    this.authService = authService;
                 }
                 ngOnInit() {
                     var id = +this.activatedRoute.snapshot.params["id"];
@@ -92,7 +96,8 @@ System.register(["@angular/core", "@angular/router", "@angular/common", "./cloth
                 }),
                 __metadata("design:paramtypes", [clothes_service_1.ClothesService,
                     router_1.Router,
-                    router_1.ActivatedRoute])
+                    router_1.ActivatedRoute,
+                    auth_service_1.AuthService])
             ], ClothesDetailViewComponent);
             exports_1("ClothesDetailViewComponent", ClothesDetailViewComponent);
         }
