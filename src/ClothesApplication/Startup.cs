@@ -17,6 +17,7 @@ using ClothesApplication.Data.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using ClothesApplication.Classes;
 using Microsoft.IdentityModel.Tokens;
+using ClothesApplication.Data.History;
 
 namespace ClothesApplication
 {
@@ -33,8 +34,9 @@ namespace ClothesApplication
             {
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
+               
             }
-
+           
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -58,7 +60,9 @@ namespace ClothesApplication
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-
+            //app.UseDeveloperExceptionPage();
+            //loggerFactory.AddDebug(LogLevel.Information);
+            //loggerFactory.AddConsole();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
             services.AddCors(options => { options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials()); });
@@ -115,6 +119,7 @@ namespace ClothesApplication
 
             app.UseMvc();
             TinyMapper.Bind<ClothesItem, ClothesViewModel>();
+            TinyMapper.Bind<HistoryItem, LogViewModel>();
 
             app.UseCors("CorsPolicy");
 

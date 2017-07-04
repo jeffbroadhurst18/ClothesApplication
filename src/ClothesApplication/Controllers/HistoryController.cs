@@ -1,4 +1,4 @@
-﻿using System;
+﻿   using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,6 +69,7 @@ namespace ClothesApplication.Controllers
         [HttpPost()]
         public IActionResult AddLog([FromBody]LogViewModel lvm)
         {
+            try { 
             if (lvm != null)
             {
                 var item = TinyMapper.Map<HistoryItem>(lvm);
@@ -79,9 +80,16 @@ namespace ClothesApplication.Controllers
                 StoreWearDetails(Tops, item.TopId);
                 StoreWearDetails(Trousers, item.TrousersId);
                 StoreWearDetails(Shoes, item.ShoesId);
-                return new JsonResult(TinyMapper.Map<HistoryItem>(item), DefaultJsonSettings);
-            }
+                return new JsonResult(TinyMapper.Map<LogViewModel>(item), DefaultJsonSettings);
+                    //return new JsonResult(item, DefaultJsonSettings);
+                }
             return new StatusCodeResult(500);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                return new StatusCodeResult(500);
+            }
         }
 
         // PUT api/values/5
